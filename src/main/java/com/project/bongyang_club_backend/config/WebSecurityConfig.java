@@ -34,7 +34,7 @@ public class WebSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/api/login").permitAll()
+                        .requestMatchers("/", "/api/login", "/api/test/**").permitAll()
                         .requestMatchers("/api/schoolclub/enroll", "/api/schoolclub/application").hasAnyRole("USER", "CLUB_LEADER")
                         .requestMatchers("/api/schoolclub/application/list", "/api/application/approve", "/api/application/deny").hasRole("CLUB_LEADER")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
