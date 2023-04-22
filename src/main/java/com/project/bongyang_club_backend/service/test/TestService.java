@@ -34,7 +34,7 @@ public class TestService {
             List<Member> members = new ArrayList<>();
             Member student1 = Member.builder()
                     .sinumber("1201")
-                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("일일일")
                     .s_grade("3")
                     .s_class("2")
@@ -44,7 +44,7 @@ public class TestService {
 
             Member student2 = Member.builder()
                     .sinumber("1202")
-                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("이이이")
                     .s_grade("3")
                     .s_class("2")
@@ -54,7 +54,7 @@ public class TestService {
 
             Member student3 = Member.builder()
                     .sinumber("1203")
-                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("삼삼삼")
                     .s_grade("3")
                     .s_class("2")
@@ -64,7 +64,7 @@ public class TestService {
 
             Member student4 = Member.builder()
                     .sinumber("1204")
-                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("사사사")
                     .s_grade("3")
                     .s_class("2")
@@ -74,7 +74,7 @@ public class TestService {
 
             Member student5 = Member.builder()
                     .sinumber("1205")
-                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("오오오")
                     .s_grade("3")
                     .s_class("2")
@@ -84,7 +84,7 @@ public class TestService {
 
             Member clubLeader1 = Member.builder()
                     .sinumber("1206")
-                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("육육육")
                     .s_grade("3")
                     .s_class("2")
@@ -94,7 +94,7 @@ public class TestService {
 
             Member clubLeader2 = Member.builder()
                     .sinumber("1207")
-                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("칠칠칠")
                     .s_grade("3")
                     .s_class("2")
@@ -104,14 +104,14 @@ public class TestService {
 
             Member teacher1 = Member.builder()
                     .sinumber("선생님1")
-                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("선생님1")
                     .role(Role.TEACHER.getKey())
                     .build();
 
             Member teacher2 = Member.builder()
                     .sinumber("선생님2")
-                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("선생님2")
                     .role(Role.TEACHER.getKey())
                     .build();
