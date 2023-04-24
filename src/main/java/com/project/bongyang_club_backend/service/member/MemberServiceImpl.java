@@ -36,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
 
         if (memberOpt.isEmpty()) {
             BasicResponse basicResponse = BasicResponse.builder()
-                    .code(HttpStatus.NOT_FOUND.value())
+                    .code(HttpStatus.FORBIDDEN.value())
                     .httpStatus(HttpStatus.OK)
                     .message("사용자를 찾을 수 없습니다.")
                     .build();
