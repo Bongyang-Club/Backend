@@ -251,14 +251,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
     @Override
     public ResponseEntity<BasicResponse> schoolClubApplicationCheck(SchoolClubApplicationCheckRequest schoolClubApplicationCheckRequest, boolean approve) {
-        Optional<Member> memberOpt = memberRepository.findById(schoolClubApplicationCheckRequest.getMemberId());
-        
-        if (memberOpt.isEmpty()) {
-            BasicResponse basicResponse = new BasicResponse()
-                    .error("사용자를 찾지 못했습니다.");
-
-            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
-        }
+        Member member = jwtProvider.getMemberByToken(request);
 
         Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(schoolClubApplicationCheckRequest.getSchoolClubId());
 
@@ -269,7 +262,6 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
-        Member member = memberOpt.get();
         SchoolClub schoolClub = schoolClubOpt.get();
         Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClub(member, schoolClub);
 
@@ -288,18 +280,31 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
-
-        memberJoinOpt = memberJoinRepository.findById(schoolClubApplicationCheckRequest.getMemberJoinId());
-
-        if (memberJoinOpt.isEmpty()) {
+        
+        List<Long> memberJoinIds = schoolClubApplicationCheckRequest.getMemberJoinIds();
+        
+        if (memberJoinIds.isEmpty()) {
             BasicResponse basicResponse = new BasicResponse()
-                    .error("동아리 신청 내역을 찾을 수 없습니다.");
+                    .error(approve ? "승인" : "거절" + "할 동아리 신청 내역이 존재하지 않습니다.");
 
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
-        memberJoin = memberJoinOpt.get();
-        memberJoin.setStatus(approve ? 2 : 3);
+        for (Long memberJoinId : memberJoinIds) {
+            memberJoinOpt = memberJoinRepository.findById(memberJoinId);
+
+            if (memberJoinOpt.isEmpty()) {
+                BasicResponse basicResponse = new BasicResponse()
+                        .error("동아리 신청 내역을 찾을 수 없습니다.");
+
+                return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+            }
+
+            memberJoin = memberJoinOpt.get();
+            memberJoin.setStatus(approve ? 2 : 3);
+
+            memberJoinRepository.save(memberJoin);
+        }
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
