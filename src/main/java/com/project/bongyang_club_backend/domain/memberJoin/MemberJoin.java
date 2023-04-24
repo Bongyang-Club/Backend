@@ -3,10 +3,12 @@ package com.project.bongyang_club_backend.domain.memberJoin;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.bongyang_club_backend.domain.schoolClub.SchoolClub;
 import com.project.bongyang_club_backend.domain.member.Member;
+import com.project.bongyang_club_backend.dto.SchoolClubApplicationDto;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -39,5 +41,13 @@ public class MemberJoin {
 
     @Column(nullable = false)
     private LocalDateTime applicationAt;
+
+    public SchoolClubApplicationDto toResponse() {
+        return SchoolClubApplicationDto.builder()
+                .name(member.getName())
+                .studentId(member.getS_number().length() == 1 ? member.getS_grade() + member.getS_class() + "0" + member.getS_number() : member.getS_grade() + member.getS_class()  + member.getS_number())
+                .applicationAt(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(applicationAt))
+                .build();
+    }
 
 }
