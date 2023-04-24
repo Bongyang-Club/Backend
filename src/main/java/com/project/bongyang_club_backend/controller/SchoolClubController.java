@@ -27,10 +27,9 @@ public class SchoolClubController {
         return schoolClubService.schoolClubApplication(schoolClubApplicationRequest);
     }
 
-    // CLUB_LEADER // 동아리 신청 내역
     @PostMapping("/application/list")
-    public ResponseEntity<BasicResponse> schoolClubApplicationList(@RequestBody SchoolClubApplicationListRequest schoolClubApplicationListRequest, HttpServletRequest request) {
-        return schoolClubService.schoolClubApplicationList(schoolClubApplicationListRequest, request);
+    public ResponseEntity<BasicResponse> schoolClubApplicationList(@RequestBody SchoolClubApplicationListRequest schoolClubApplicationListRequest) {
+        return schoolClubService.schoolClubApplicationList(schoolClubApplicationListRequest);
     }
 
     @PostMapping("/application/promotion")

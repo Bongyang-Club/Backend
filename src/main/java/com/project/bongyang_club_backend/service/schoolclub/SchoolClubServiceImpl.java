@@ -40,6 +40,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
     private final JWTProvider jwtProvider;
 
+    private final HttpServletRequest request;
+
     @Override
     public ResponseEntity<BasicResponse> schoolClubEnroll(SchoolClubEnrollRequest schoolClubEnrollRequest) {
         Integer type = schoolClubEnrollRequest.getType();
@@ -183,7 +185,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     }
 
     @Override
-    public ResponseEntity<BasicResponse> schoolClubApplicationList(SchoolClubApplicationListRequest schoolClubApplicationListRequest, HttpServletRequest request) {
+    public ResponseEntity<BasicResponse> schoolClubApplicationList(SchoolClubApplicationListRequest schoolClubApplicationListRequest) {
         Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(schoolClubApplicationListRequest.getSchoolClubId());
 
         if (schoolClubOpt.isEmpty()) {
