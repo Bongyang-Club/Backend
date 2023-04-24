@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -198,12 +199,18 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
+        List<SchoolClubApplicationDto> schoolClubApplicationRespons = new ArrayList<>();
+
+        for (MemberJoin memberJoin : memberJoins) {
+            schoolClubApplicationRespons.add(memberJoin.toResponse());
+        }
+
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message(schoolClub.getName() + "의 동아리 신청내역을 정상적으로 찾았습니다.")
                 .count(memberJoins.size())
-                .result(memberJoins)
+                .result(schoolClubApplicationRespons)
                 .build();
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
