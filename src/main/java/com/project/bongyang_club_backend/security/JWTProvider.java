@@ -1,5 +1,7 @@
 package com.project.bongyang_club_backend.security;
 
+import com.project.bongyang_club_backend.domain.member.Member;
+import com.project.bongyang_club_backend.domain.member.MemberRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -32,6 +36,8 @@ public class JWTProvider {
     private Long exp = 1000L * 60 * 60;
 
     private final CustomUserDetailsService customUserDetailsService;
+
+    private final MemberRepository memberRepository;
 
     @PostConstruct
     protected void init() {
@@ -88,6 +94,21 @@ public class JWTProvider {
         } catch (Exception exception) {
             return false;
         }
+    }
+
+    public Member getMemberByToken(HttpServletRequest request) {
+        String token = resolveToken(request).split(" ")[1].trim();
+
+        String si_number = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+
+        log.info("si_number: {}", si_number);
+
+        return memberRepository.findById(si_number).orElse(null);
     }
 
 }
