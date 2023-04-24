@@ -35,8 +35,11 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> memberOpt = memberRepository.findById(request.getSi_number());
 
         if (memberOpt.isEmpty()) {
-            BasicResponse basicResponse = new BasicResponse()
-                    .error("아이디가 일치하지 않습니다.");
+            BasicResponse basicResponse = BasicResponse.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("사용자를 찾을 수 없습니다.")
+                    .build();
 
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
@@ -44,8 +47,11 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberOpt.get();
 
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
-            BasicResponse basicResponse = new BasicResponse()
-                    .error("비밀번호가 일치하지 않습니다.");
+            BasicResponse basicResponse = BasicResponse.builder()
+                    .code(HttpStatus.FORBIDDEN.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("비밀번호가 일치하지 않습니다.")
+                    .build();
 
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
