@@ -9,7 +9,9 @@ import com.project.bongyang_club_backend.domain.memberJoin.MemberJoin;
 import com.project.bongyang_club_backend.domain.memberJoin.MemberJoinRepository;
 import com.project.bongyang_club_backend.dto.*;
 import com.project.bongyang_club_backend.response.BasicResponse;
+import com.project.bongyang_club_backend.security.JWTProvider;
 import com.project.bongyang_club_backend.service.member.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     private final MemberJoinRepository memberJoinRepository;
 
     private final MemberService memberService;
+
+    private final JWTProvider jwtProvider;
 
     @Override
     public ResponseEntity<BasicResponse> schoolClubEnroll(SchoolClubEnrollRequest schoolClubEnrollRequest) {
@@ -179,7 +183,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     }
 
     @Override
-    public ResponseEntity<BasicResponse> schoolClubApplicationList(SchoolClubApplicationListRequest schoolClubApplicationListRequest) {
+    public ResponseEntity<BasicResponse> schoolClubApplicationList(SchoolClubApplicationListRequest schoolClubApplicationListRequest, HttpServletRequest request) {
         Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(schoolClubApplicationListRequest.getSchoolClubId());
 
         if (schoolClubOpt.isEmpty()) {
@@ -189,7 +193,25 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
+        Member member = jwtProvider.getMemberByToken(request);
         SchoolClub schoolClub = schoolClubOpt.get();
+
+//        if (member == null) {
+//            BasicResponse basicResponse = new BasicResponse()
+//                    .error("사용자를 찾을 수 없습니다.");
+//
+//            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+//        }
+
+        Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClub(member, schoolClub);
+
+        if (memberJoinOpt.isEmpty() || !memberJoinOpt.get().getRole().equals("ROLE_CLUB_LEADER")) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error(schoolClub.getName() + "의 동아리장이 아닙니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
         List<MemberJoin> memberJoins = memberJoinRepository.findAllBySchoolClub(schoolClub);
 
         if (memberJoins.isEmpty()) {
@@ -199,10 +221,14 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
-        List<SchoolClubApplicationDto> schoolClubApplicationRespons = new ArrayList<>();
+        List<SchoolClubApplicationDto> schoolClubApplicationDtos = new ArrayList<>();
 
         for (MemberJoin memberJoin : memberJoins) {
-            schoolClubApplicationRespons.add(memberJoin.toResponse());
+            if (memberJoin.getRole().equals("ROLE_CLUB_LEADER")) {
+                continue;
+            }
+
+            schoolClubApplicationDtos.add(memberJoin.toResponse());
         }
 
         BasicResponse basicResponse = BasicResponse.builder()
@@ -210,7 +236,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
                 .httpStatus(HttpStatus.OK)
                 .message(schoolClub.getName() + "의 동아리 신청내역을 정상적으로 찾았습니다.")
                 .count(memberJoins.size())
-                .result(schoolClubApplicationRespons)
+                .result(schoolClubApplicationDtos)
                 .build();
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
