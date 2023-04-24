@@ -33,7 +33,7 @@ public class TestService {
             // 사용자
             List<Member> members = new ArrayList<>();
             Member student1 = Member.builder()
-                    .sinumber("1201")
+                    .si_number("1201")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("일일일")
                     .s_grade("3")
@@ -43,7 +43,7 @@ public class TestService {
                     .build();
 
             Member student2 = Member.builder()
-                    .sinumber("1202")
+                    .si_number("1202")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("이이이")
                     .s_grade("3")
@@ -53,7 +53,7 @@ public class TestService {
                     .build();
 
             Member student3 = Member.builder()
-                    .sinumber("1203")
+                    .si_number("1203")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("삼삼삼")
                     .s_grade("3")
@@ -63,7 +63,7 @@ public class TestService {
                     .build();
 
             Member student4 = Member.builder()
-                    .sinumber("1204")
+                    .si_number("1204")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("사사사")
                     .s_grade("3")
@@ -73,7 +73,7 @@ public class TestService {
                     .build();
 
             Member student5 = Member.builder()
-                    .sinumber("1205")
+                    .si_number("1205")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("오오오")
                     .s_grade("3")
@@ -83,7 +83,7 @@ public class TestService {
                     .build();
 
             Member clubLeader1 = Member.builder()
-                    .sinumber("1206")
+                    .si_number("1206")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("육육육")
                     .s_grade("3")
@@ -93,7 +93,7 @@ public class TestService {
                     .build();
 
             Member clubLeader2 = Member.builder()
-                    .sinumber("1207")
+                    .si_number("1207")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("칠칠칠")
                     .s_grade("3")
@@ -103,14 +103,14 @@ public class TestService {
                     .build();
 
             Member teacher1 = Member.builder()
-                    .sinumber("선생님1")
+                    .si_number("선생님1")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("선생님1")
                     .role(Role.TEACHER.getKey())
                     .build();
 
             Member teacher2 = Member.builder()
-                    .sinumber("선생님2")
+                    .si_number("선생님2")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
                     .name("선생님2")
                     .role(Role.TEACHER.getKey())
