@@ -57,10 +57,10 @@ public class MemberServiceImpl implements MemberService {
         }
 
         SignResponse signResponse = SignResponse.builder()
-                .si_number(member.getSinumber())
+                .si_number(member.getSi_number())
                 .name(member.getName())
                 .role(member.getRole())
-                .token(jwtProvider.createToken(member.getSinumber(), member.getRole()))
+                .token(jwtProvider.createToken(member.getSi_number(), member.getRole()))
                 .build();
 
         if (member.getS_number().length() == 1) {
