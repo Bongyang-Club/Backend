@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SchoolClubApplicationDto {
 
+    private Long memberJoinId;
+
     private String name;
 
     private String studentId;

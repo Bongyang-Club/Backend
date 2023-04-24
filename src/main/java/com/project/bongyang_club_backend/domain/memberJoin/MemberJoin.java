@@ -44,6 +44,7 @@ public class MemberJoin {
 
     public SchoolClubApplicationDto toResponse() {
         return SchoolClubApplicationDto.builder()
+                .memberJoinId(id)
                 .name(member.getName())
                 .studentId(member.getS_number().length() == 1 ? member.getS_grade() + member.getS_class() + "0" + member.getS_number() : member.getS_grade() + member.getS_class()  + member.getS_number())
                 .applicationAt(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(applicationAt))
