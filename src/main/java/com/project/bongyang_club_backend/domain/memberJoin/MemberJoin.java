@@ -1,5 +1,6 @@
 package com.project.bongyang_club_backend.domain.memberJoin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.bongyang_club_backend.domain.schoolClub.SchoolClub;
 import com.project.bongyang_club_backend.domain.member.Member;
 import jakarta.persistence.*;
@@ -20,10 +21,12 @@ public class MemberJoin {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "school_club_id")
     private SchoolClub schoolClub;
 
