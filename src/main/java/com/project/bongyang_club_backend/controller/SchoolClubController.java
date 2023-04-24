@@ -3,6 +3,7 @@ package com.project.bongyang_club_backend.controller;
 import com.project.bongyang_club_backend.dto.*;
 import com.project.bongyang_club_backend.response.BasicResponse;
 import com.project.bongyang_club_backend.service.schoolclub.SchoolClubService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +29,8 @@ public class SchoolClubController {
 
     // CLUB_LEADER // 동아리 신청 내역
     @PostMapping("/application/list")
-    public ResponseEntity<BasicResponse> schoolClubApplicationList(@RequestBody SchoolClubApplicationListRequest schoolClubApplicationListRequest) {
-        return schoolClubService.schoolClubApplicationList(schoolClubApplicationListRequest);
+    public ResponseEntity<BasicResponse> schoolClubApplicationList(@RequestBody SchoolClubApplicationListRequest schoolClubApplicationListRequest, HttpServletRequest request) {
+        return schoolClubService.schoolClubApplicationList(schoolClubApplicationListRequest, request);
     }
 
     @PostMapping("/application/promotion")
