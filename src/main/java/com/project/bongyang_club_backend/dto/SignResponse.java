@@ -23,7 +23,7 @@ public class SignResponse {
     private String token;
 
     public SignResponse(Member member) {
-        this.si_number = member.getSinumber();
+        this.si_number = member.getSi_number();
         this.name = member.getName();
         this.studentId = member.getS_grade() + member.getS_class();
         if (member.getS_number().length() == 1) {

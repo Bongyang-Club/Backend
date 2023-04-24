@@ -17,7 +17,7 @@ public class Member  {
 
     // 아이디
     @Id
-    private String sinumber;
+    private String si_number;
 
     @JsonIgnore
     @Column(nullable = false)
