@@ -252,7 +252,6 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     @Override
     public ResponseEntity<BasicResponse> schoolClubApplicationCheck(SchoolClubApplicationCheckRequest schoolClubApplicationCheckRequest, boolean approve) {
         Member member = jwtProvider.getMemberByToken(request);
-
         Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(schoolClubApplicationCheckRequest.getSchoolClubId());
 
         if (schoolClubOpt.isEmpty()) {
