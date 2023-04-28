@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface MemberService {
 
+    ResponseEntity<BasicResponse> getMemberByToken();
+
     ResponseEntity<BasicResponse> login(SignRequest request);
 
     Boolean schoolClubDuplicateCheck(Member member, int type);

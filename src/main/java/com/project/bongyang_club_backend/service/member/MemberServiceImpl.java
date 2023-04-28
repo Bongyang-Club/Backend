@@ -8,6 +8,7 @@ import com.project.bongyang_club_backend.dto.SignRequest;
 import com.project.bongyang_club_backend.dto.SignResponse;
 import com.project.bongyang_club_backend.response.BasicResponse;
 import com.project.bongyang_club_backend.security.JWTProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,30 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     private final JWTProvider jwtProvider;
+
+    private final HttpServletRequest request;
+
+    @Override
+    public ResponseEntity<BasicResponse> getMemberByToken() {
+        Member member = jwtProvider.getMemberByToken(request);
+
+        if (member == null) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("사용자를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("사용자를 정상적으로 찾았습니다.")
+                .count(1)
+                .result(member)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
 
     @Override
     public ResponseEntity<BasicResponse> login(SignRequest request) {
