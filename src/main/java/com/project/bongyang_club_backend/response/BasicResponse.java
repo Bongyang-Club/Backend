@@ -32,4 +32,14 @@ public class BasicResponse {
                 .build();
     }
 
+    public BasicResponse success(String message, Integer count, Object result) {
+        return BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message(message)
+                .count(count)
+                .result(result)
+                .build();
+    }
+
 }
