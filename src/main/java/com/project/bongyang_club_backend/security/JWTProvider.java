@@ -97,8 +97,13 @@ public class JWTProvider {
     }
 
     public Member getMemberByToken(HttpServletRequest request) {
-        String token = resolveToken(request).split(" ")[1].trim();
+        String bearerToken = resolveToken(request);
 
+        if (bearerToken == null || bearerToken.isEmpty()) {
+            return null;
+        }
+
+        String token = bearerToken.split(" ")[1].trim();
         String si_number = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
