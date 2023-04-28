@@ -3,7 +3,7 @@ package com.project.bongyang_club_backend.controller;
 import com.project.bongyang_club_backend.dto.*;
 import com.project.bongyang_club_backend.response.BasicResponse;
 import com.project.bongyang_club_backend.service.schoolclub.SchoolClubService;
-import jakarta.servlet.http.HttpServletRequest;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/schoolclub")
+@Tag(name = "SchoolClub", description = "SchoolClub Management API's")
 public class SchoolClubController {
 
     private final SchoolClubService schoolClubService;
