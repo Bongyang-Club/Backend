@@ -1,5 +1,7 @@
 package com.project.bongyang_club_backend.domain.schoolClub.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,8 +13,10 @@ import java.util.Map;
 public class SchoolClubPromotionApplicationRequest {
 
     // to valid
+    @Positive(message = "사용자 아이디를 확인해주세요.")
     private Long memberId;
 
+    @NotBlank(message = "동아리 이름을 확인해주세요.")
     private String schoolClubName;
 
     // 구글 폼
