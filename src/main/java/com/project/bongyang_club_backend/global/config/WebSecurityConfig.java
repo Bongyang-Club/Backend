@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/", "/v3/api-docs/**", "/swagger-ui/**", "/api/login", "/api/member", "/api/test/**").permitAll()
-                        .requestMatchers("/api/schoolclub/enroll", "/api/schoolclub/application").hasAnyRole("USER", "CLUB_LEADER")
+                        .requestMatchers("/api/schoolclub/enroll", "/api/schoolclub/application").hasAnyRole("STUDENT", "CLUB_LEADER")
                         .requestMatchers("/api/schoolclub/application/list", "/api/application/approve", "/api/application/deny").hasRole("CLUB_LEADER")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
@@ -46,7 +46,7 @@ public class WebSecurityConfig {
                     response.setStatus(403);
                     response.setCharacterEncoding("utf-8");
                     response.setContentType("text/html; charset=UTF-8");
-                    response.getWriter().write("권한이 없는 사용자입니다.");
+                    response.getWriter().write("권한이 없는 사용자입 니다.");
                 })
                 .authenticationEntryPoint((request, response, authException) -> {
                     response.setStatus(401);
