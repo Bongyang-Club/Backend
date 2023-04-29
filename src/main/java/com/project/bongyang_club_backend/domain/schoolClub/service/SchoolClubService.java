@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SchoolClubService {
 
-    ResponseEntity<BasicResponse> schoolClubEnroll(SchoolClubEnrollRequest schoolClubEnrollRequest);
+    ResponseEntity<BasicResponse> schoolClubEnroll(SchoolClubEnrollRequest request);
 
-    ResponseEntity<BasicResponse> schoolClubApplication(SchoolClubApplicationRequest schoolClubApplicationRequest);
+    ResponseEntity<BasicResponse> schoolClubApplication(SchoolClubApplicationRequest request);
 
 
-    ResponseEntity<BasicResponse> schoolClubApplicationList(SchoolClubApplicationListRequest schoolClubApplicationListRequest);
+    ResponseEntity<BasicResponse> schoolClubApplicationList(SchoolClubApplicationListRequest request);
 
-    ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest schoolClubPromotionApplicationDto);
+    ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request);
 
-    ResponseEntity<BasicResponse> schoolClubApplicationCheck(SchoolClubApplicationCheckRequest schoolClubApplicationCheckRequest, boolean approve);
+    ResponseEntity<BasicResponse> schoolClubApplicationCheck(SchoolClubApplicationCheckRequest request, boolean approve);
 
 }

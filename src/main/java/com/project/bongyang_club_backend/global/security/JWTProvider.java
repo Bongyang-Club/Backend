@@ -72,8 +72,8 @@ public class JWTProvider {
                 .getSubject();
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("Authorization");
+    public String resolveToken(HttpServletRequest httpServletRequest) {
+        return httpServletRequest.getHeader("Authorization");
     }
 
     public boolean validateToken(String token) {
@@ -94,8 +94,8 @@ public class JWTProvider {
         }
     }
 
-    public Member getMemberByToken(HttpServletRequest request) {
-        String bearerToken = resolveToken(request);
+    public Member getMemberByToken(HttpServletRequest httpServletRequest) {
+        String bearerToken = resolveToken(httpServletRequest);
 
         if (bearerToken == null || bearerToken.isEmpty()) {
             return null;
