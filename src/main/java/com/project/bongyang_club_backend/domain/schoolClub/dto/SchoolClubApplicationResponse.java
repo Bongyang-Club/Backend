@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SchoolClubApplicationDto {
+public class SchoolClubApplicationResponse {
 
     private Long memberJoinId;
 
