@@ -3,7 +3,7 @@ package com.project.bongyang_club_backend.domain.memberJoin.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.bongyang_club_backend.domain.schoolClub.domain.SchoolClub;
 import com.project.bongyang_club_backend.domain.member.domain.Member;
-import com.project.bongyang_club_backend.domain.schoolClub.dto.SchoolClubApplicationDto;
+import com.project.bongyang_club_backend.domain.schoolClub.dto.SchoolClubApplicationResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,8 +42,8 @@ public class MemberJoin {
     @Column(nullable = false)
     private LocalDateTime applicationAt;
 
-    public SchoolClubApplicationDto toResponse() {
-        return SchoolClubApplicationDto.builder()
+    public SchoolClubApplicationResponse toResponse() {
+        return SchoolClubApplicationResponse.builder()
                 .memberJoinId(id)
                 .name(member.getName())
                 .studentId(member.getS_number().length() == 1 ? member.getS_grade() + member.getS_class() + "0" + member.getS_number() : member.getS_grade() + member.getS_class()  + member.getS_number())
