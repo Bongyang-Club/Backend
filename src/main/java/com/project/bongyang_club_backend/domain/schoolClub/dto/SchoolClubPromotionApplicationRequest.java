@@ -1,20 +1,15 @@
 package com.project.bongyang_club_backend.domain.schoolClub.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 @Data
 public class SchoolClubPromotionApplicationRequest {
-
-    // to valid
-    @Positive(message = "사용자 아이디를 확인해주세요.")
-    private Long memberId;
 
     @NotBlank(message = "동아리 이름을 확인해주세요.")
     private String schoolClubName;
@@ -43,6 +38,22 @@ public class SchoolClubPromotionApplicationRequest {
     // 장소(면접 or 테스트)
     private String checkPlace;
 
-    private Map<String, Integer> eoguddl;
+    // 모집 대상
+    private Map<String, Integer> target;
+    
+    // 활동 방법
+    @NotBlank(message = "활동 방법을 확인해주세요.")
+    private String a_method;
+
+    // 활동 장소
+    @NotBlank(message = "활동 장소를 확인해주세요.")
+    private String a_place;
+
+    // 활동 시간
+    @NotBlank(message = "활동 시간을 확인해주세요.")
+    private String a_time;
+
+    // 가입 문의
+    private Map<String, String> a_inquiry;
 
 }
