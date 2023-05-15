@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -94,24 +95,28 @@ public class JWTProvider {
         }
     }
 
-    public Member getMemberByToken(HttpServletRequest httpServletRequest) {
-        String bearerToken = resolveToken(httpServletRequest);
+    public Optional<Member> getMemberByToken(HttpServletRequest httpServletRequest) {
+        try {
+            String bearerToken = resolveToken(httpServletRequest);
 
-        if (bearerToken == null || bearerToken.isEmpty()) {
-            return null;
+            if (validateToken(bearerToken)) {
+                return Optional.empty();
+            }
+
+            String token = bearerToken.split(" ")[1].trim();
+            String si_number = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+
+            log.info("si_number: {}", si_number);
+
+            return memberRepository.findById(si_number);
+        } catch (Exception exception) {
+            return Optional.empty();
         }
-
-        String token = bearerToken.split(" ")[1].trim();
-        String si_number = Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-
-        log.info("si_number: {}", si_number);
-
-        return memberRepository.findById(si_number).orElse(null);
     }
 
 }
