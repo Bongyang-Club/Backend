@@ -34,9 +34,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ResponseEntity<BasicResponse> getMemberByToken() {
-        Member member = jwtProvider.getMemberByToken(request);
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(request);
 
-        if (member == null) {
+        if (memberOpt.isEmpty()) {
             BasicResponse basicResponse = new BasicResponse()
                     .error("사용자를 찾을 수 없습니다.");
 
@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
                 .httpStatus(HttpStatus.OK)
                 .message("사용자를 정상적으로 찾았습니다.")
                 .count(1)
-                .result(member)
+                .result(memberOpt.get())
                 .build();
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
