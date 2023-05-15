@@ -3,6 +3,7 @@ package com.project.bongyang_club_backend.domain.schoolClub.service;
 import com.project.bongyang_club_backend.domain.member.enums.Role;
 import com.project.bongyang_club_backend.domain.member.domain.Member;
 import com.project.bongyang_club_backend.domain.member.repository.MemberRepository;
+import com.project.bongyang_club_backend.domain.postForm.domain.PostForm;
 import com.project.bongyang_club_backend.domain.schoolClub.domain.*;
 import com.project.bongyang_club_backend.domain.schoolClub.dto.*;
 import com.project.bongyang_club_backend.domain.schoolClub.repository.SchoolClubRepository;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -135,7 +137,16 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
-        Member member = jwtProvider.getMemberByToken(httpServletRequest);
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("사용자를 찾지 못했습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Member member = memberOpt.get();
         SchoolClub schoolClub = schoolClubOpt.get();
         MemberJoin memberJoin = MemberJoin.builder()
                 .member(member)
@@ -170,7 +181,16 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
-        Member member = jwtProvider.getMemberByToken(httpServletRequest);
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("사용자를 찾지 못했습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Member member = memberOpt.get();
         SchoolClub schoolClub = schoolClubOpt.get();
         Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClub(member, schoolClub);
 
@@ -213,12 +233,55 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
     @Override
     public ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request) {
+        PostForm postForm = new PostForm();
+
+        if (request.getInterview() && request.getTest()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("면접과 테스트 중 한 개만 선택이 가능합니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        if (request.getGoogleForm()) {
+            if (request.getGf_link().isBlank()) {
+                BasicResponse basicResponse = new BasicResponse()
+                        .error("구글폼 링크를 확인해주세요.");
+
+                return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+            }
+
+            if (request.getStartDate().toString().isBlank() || request.getEndDate().toString().isBlank()) {
+                BasicResponse basicResponse = new BasicResponse()
+                        .error("구글폼 기한을 확인해주세요.");
+
+                return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+            }
+
+            postForm.setGf_check(true);
+            postForm.setGf_link(request.getGf_link());
+            postForm.setGf_start(DateTimeFormatter.ofPattern("yyyy.MM.dd").format(request.getStartDate()));
+            postForm.setGf_end(DateTimeFormatter.ofPattern("yyyy.MM.dd").format(request.getEndDate()));
+        }
+
+        if (request.getInterview()) {
+
+        }
+
         return null;
     }
 
     @Override
     public ResponseEntity<BasicResponse> schoolClubApplicationCheck(SchoolClubApplicationCheckRequest request, boolean approve) {
-        Member member = jwtProvider.getMemberByToken(httpServletRequest);
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("사용자를 찾지 못했습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Member member = memberOpt.get();
         Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getSchoolClubId());
 
         if (schoolClubOpt.isEmpty()) {
