@@ -58,6 +58,8 @@ public class MemberServiceImpl implements MemberService {
     public ResponseEntity<BasicResponse> login(SignRequest request) {
         Optional<Member> memberOpt = memberRepository.findById(request.getSi_number());
 
+        log.info(request.toString());
+
         if (memberOpt.isEmpty()) {
             BasicResponse basicResponse = BasicResponse.builder()
                     .code(HttpStatus.FORBIDDEN.value())
