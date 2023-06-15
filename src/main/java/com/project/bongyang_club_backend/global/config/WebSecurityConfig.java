@@ -36,7 +36,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/", "/v3/api-docs/**", "/swagger-ui/**", "/api/login", "/api/member", "/api/test/**").permitAll()
                         .requestMatchers("/api/schoolclub/enroll", "/api/schoolclub/application").hasAnyRole("STUDENT", "CLUB_LEADER")
-                        .requestMatchers("/api/schoolclub/application/list", "/api/application/approve", "/api/application/deny").hasRole("CLUB_LEADER")
+                        .requestMatchers("/api/schoolclub/members/**", "/api/schoolclub/application/list", "/api/application/approve", "/api/application/deny").hasRole("CLUB_LEADER")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

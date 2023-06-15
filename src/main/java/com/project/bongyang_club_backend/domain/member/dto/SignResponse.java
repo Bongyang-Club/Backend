@@ -32,4 +32,5 @@ public class SignResponse {
         this.studentId += member.getS_number();
         this.role = member.getRole();
     }
+
 }

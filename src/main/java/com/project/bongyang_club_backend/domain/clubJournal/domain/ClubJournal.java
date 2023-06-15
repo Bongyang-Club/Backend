@@ -1,7 +1,6 @@
 package com.project.bongyang_club_backend.domain.clubJournal.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;

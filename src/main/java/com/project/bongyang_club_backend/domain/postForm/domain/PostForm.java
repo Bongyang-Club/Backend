@@ -1,6 +1,7 @@
 package com.project.bongyang_club_backend.domain.postForm.domain;
 
 import com.project.bongyang_club_backend.domain.schedule.domain.Schedule;
+import com.project.bongyang_club_backend.domain.schoolClub.domain.SchoolClub;
 import com.project.bongyang_club_backend.domain.target.domain.Target;
 import com.project.bongyang_club_backend.domain.member.domain.Member;
 import jakarta.persistence.*;
@@ -17,7 +18,10 @@ public class PostForm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
+    
+    @OneToOne
+    private SchoolClub schoolClubId;
 
     // 구글 폼
     private Boolean gf_check;

@@ -12,6 +12,7 @@ import com.project.bongyang_club_backend.domain.memberJoin.repository.MemberJoin
 import com.project.bongyang_club_backend.global.response.BasicResponse;
 import com.project.bongyang_club_backend.global.security.JWTProvider;
 import com.project.bongyang_club_backend.domain.member.service.MemberService;
+import jakarta.persistence.Basic;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,49 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     private final JWTProvider jwtProvider;
 
     private final HttpServletRequest httpServletRequest;
+
+    @Override
+    public ResponseEntity<BasicResponse> getSchoolClubMembers(Long clubId) {
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(clubId);
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("사용자를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Member member = memberOpt.get();
+        SchoolClub schoolClub = schoolClubOpt.get();
+        Optional<MemberJoin> memberJoin = memberJoinRepository.findByMemberAndSchoolClub(member, schoolClub);
+
+        if (memberJoin.isEmpty() || !memberJoin.get().getRole().equals(Role.CLUB_LEADER.getKey())) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("잘못된 요청입니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        List<MemberJoin> memberJoins = schoolClub.getMembers();
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("동아리원을 정상적으로 찾았습니다.")
+                .count(memberJoins.size())
+                .result(memberJoins)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
 
     @Override
     public ResponseEntity<BasicResponse> schoolClubEnroll(SchoolClubEnrollRequest request) {
