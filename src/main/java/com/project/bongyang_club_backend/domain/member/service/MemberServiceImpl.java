@@ -86,14 +86,9 @@ public class MemberServiceImpl implements MemberService {
                 .si_number(member.getSi_number())
                 .name(member.getName())
                 .role(member.getRole())
+                .studentId(getStudentId(member))
                 .token(jwtProvider.createToken(member.getSi_number(), member.getRole()))
                 .build();
-
-        if (member.getS_number().length() == 1) {
-            signResponse.setStudentId(member.getS_grade() + member.getS_class() + "0");
-        }
-
-        signResponse.setStudentId(signResponse.getStudentId() + member.getS_number());
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
@@ -127,4 +122,18 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
+    @Override
+    public String getStudentId(Member member) {
+        String studentId;
+
+        if (member.getS_number().length() > 1) {
+             studentId = member.getS_grade() + member.getS_class() + member.getS_number();
+        } else {
+            studentId = member.getS_grade() + member.getS_class() + "0" + member.getS_number();
+        }
+
+        log.info("studentId: {}", studentId);
+
+        return studentId;
+    }
 }

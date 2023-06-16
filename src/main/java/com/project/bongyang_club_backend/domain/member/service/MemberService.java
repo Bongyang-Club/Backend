@@ -15,4 +15,6 @@ public interface MemberService {
 
     Boolean schoolClubDuplicateCheck(Member member, int type);
 
+    String getStudentId(Member member);
+
 }

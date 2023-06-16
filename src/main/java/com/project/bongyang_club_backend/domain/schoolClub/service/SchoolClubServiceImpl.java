@@ -67,9 +67,9 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         Member member = memberOpt.get();
         SchoolClub schoolClub = schoolClubOpt.get();
-        Optional<MemberJoin> memberJoin = memberJoinRepository.findByMemberAndSchoolClub(member, schoolClub);
+        Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClub(member, schoolClub);
 
-        if (memberJoin.isEmpty() || !memberJoin.get().getRole().equals(Role.CLUB_LEADER.getKey())) {
+        if (memberJoinOpt.isEmpty() || !memberJoinOpt.get().getRole().equals(Role.CLUB_LEADER.getKey())) {
             BasicResponse basicResponse = new BasicResponse()
                     .error("잘못된 요청입니다.");
 
@@ -77,12 +77,26 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         }
 
         List<MemberJoin> memberJoins = schoolClub.getMembers();
+        List<SchoolClubMemberDto> memberDtos = new ArrayList<>();
+
+        for (MemberJoin memberJoin : memberJoins) {
+            Member clubMember = memberJoin.getMember();
+
+            memberDtos.add(
+                    SchoolClubMemberDto.builder()
+                    .name(clubMember.getName())
+                    .studentId(memberService.getStudentId(member))
+                    .joinAt(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(memberJoin.getJoinAt()))
+                    .build()
+            );
+        }
+
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("동아리원을 정상적으로 찾았습니다.")
                 .count(memberJoins.size())
-                .result(memberJoins)
+                .result(memberDtos)
                 .build();
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());

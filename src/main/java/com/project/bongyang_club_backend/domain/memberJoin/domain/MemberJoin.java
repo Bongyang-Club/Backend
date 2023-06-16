@@ -42,6 +42,9 @@ public class MemberJoin {
     @Column(nullable = false)
     private LocalDateTime applicationAt;
 
+    @Column(nullable = false)
+    private LocalDateTime joinAt;
+
     public SchoolClubApplicationResponse toResponse() {
         return SchoolClubApplicationResponse.builder()
                 .memberJoinId(id)
