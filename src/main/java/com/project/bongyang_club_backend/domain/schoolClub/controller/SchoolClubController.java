@@ -18,10 +18,10 @@ public class SchoolClubController {
     private final SchoolClubService schoolClubService;
 
     // 동아리원 리스트
-    // clubName에는 공백이 포함되지 않으므로 공백은 "_"로 대체한다. 알 고리즘 동아리
-    @GetMapping("/members")
-    public ResponseEntity<BasicResponse> getSchoolClubMembers(@RequestBody Long clubId) {
-        return schoolClubService.getSchoolClubMembers(clubId);
+    // clubName에는 공백이 포함되지 않으므로 공백은 "_"로 대체한다.
+    @PostMapping("/members")
+    public ResponseEntity<BasicResponse> getSchoolClubMembers(@RequestBody SchoolClubId clubId) {
+        return schoolClubService.getSchoolClubMembers(clubId.getId());
     }
 
     // 동아리 신청
