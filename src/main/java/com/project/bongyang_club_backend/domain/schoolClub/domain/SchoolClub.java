@@ -1,6 +1,7 @@
 package com.project.bongyang_club_backend.domain.schoolClub.domain;
 
 import com.project.bongyang_club_backend.domain.clubJournal.domain.ClubJournal;
+import com.project.bongyang_club_backend.domain.image.domain.Image;
 import com.project.bongyang_club_backend.domain.notice.domain.Notice;
 import com.project.bongyang_club_backend.domain.promotionPost.domain.PromotionPost;
 import com.project.bongyang_club_backend.domain.member.domain.Member;
@@ -51,6 +52,9 @@ public class SchoolClub {
 
     @OneToMany
     private List<Notice> notices;
+
+    @OneToOne
+    private Image image;
 
     // 1: 자율, 2: 전공
     @Column(nullable = false)

@@ -46,6 +46,34 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     private final HttpServletRequest httpServletRequest;
 
     @Override
+    public ResponseEntity<BasicResponse> getMySchoolClub() {
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("사용자를 찾지 못했습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        List<SchoolClub> schoolClubs = new ArrayList<>();
+
+        for (MemberJoin memberJoin : memberOpt.get().getSchoolClubs()) {
+            schoolClubs.add(memberJoin.getSchoolClub());
+        }
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("동아리원을 정상적으로 찾았습니다.")
+                .count(memberOpt.get().getSchoolClubs().size())
+                .result(schoolClubs)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
+
+    @Override
     public ResponseEntity<BasicResponse> getSchoolClubMembers(Long clubId) {
         Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(clubId);
 

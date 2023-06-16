@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SchoolClubService {
 
+    ResponseEntity<BasicResponse> getMySchoolClub();
+
     ResponseEntity<BasicResponse> getSchoolClubMembers(Long clubId);
 
     ResponseEntity<BasicResponse> schoolClubEnroll(SchoolClubEnrollRequest request);
