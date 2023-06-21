@@ -150,6 +150,7 @@ public class TestService {
                     .schoolClub(club1)
                     .role(Role.CLUB_LEADER.getKey())
                     .status(2)
+                    .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
 
@@ -158,6 +159,7 @@ public class TestService {
                     .schoolClub(club2)
                     .role(Role.CLUB_LEADER.getKey())
                     .status(2)
+                    .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
 
@@ -166,6 +168,7 @@ public class TestService {
                     .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
                     .status(1)
+                    .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
 
@@ -174,6 +177,7 @@ public class TestService {
                     .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
                     .status(1)
+                    .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
 
@@ -182,6 +186,7 @@ public class TestService {
                     .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
                     .status(1)
+                    .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
 
@@ -190,6 +195,7 @@ public class TestService {
                     .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
                     .status(1)
+                    .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
 
@@ -198,6 +204,7 @@ public class TestService {
                     .schoolClub(club2)
                     .role(Role.STUDENT.getKey())
                     .status(1)
+                    .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
 

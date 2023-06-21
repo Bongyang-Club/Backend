@@ -22,4 +22,6 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> schoolClubApplicationCheck(SchoolClubApplicationCheckRequest request, boolean approve);
 
+    ResponseEntity<BasicResponse> changeClubLeader(ChangeLeaderRequest request);
+
 }

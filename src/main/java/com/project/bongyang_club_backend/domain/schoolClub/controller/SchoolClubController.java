@@ -47,6 +47,7 @@ public class SchoolClubController {
         return schoolClubService.schoolClubApplicationList(request);
     }
 
+    // 개발 중
     @PostMapping("/application/promotion")
     public ResponseEntity<BasicResponse> schoolClubPromotionApplication(@RequestBody @Valid SchoolClubPromotionApplicationRequest request) {
         return schoolClubService.schoolClubPromotionApplication(request);
@@ -62,6 +63,11 @@ public class SchoolClubController {
     @PutMapping("/application/deny")
     public ResponseEntity<BasicResponse> schoolClubApplicationDeny(@RequestBody @Valid SchoolClubApplicationCheckRequest request) {
         return schoolClubService.schoolClubApplicationCheck(request, false);
+    }
+
+    @PutMapping("/leader/change")
+    public ResponseEntity<BasicResponse> changeClubLeader(@RequestBody @Valid ChangeLeaderRequest request) {
+        return schoolClubService.changeClubLeader(request);
     }
 
 }

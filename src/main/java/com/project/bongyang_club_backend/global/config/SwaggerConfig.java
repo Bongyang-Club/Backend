@@ -11,7 +11,7 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    private String devUrl = "http://localhost:8080/api";
+    private String devUrl = "http://localhost:8080/";
 
     @Bean
     public OpenAPI myOpenAPI() {

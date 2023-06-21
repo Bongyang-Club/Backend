@@ -14,6 +14,8 @@ public interface MemberJoinRepository extends JpaRepository<MemberJoin, Long> {
 
     Optional<MemberJoin> findByMemberAndSchoolClub(Member member, SchoolClub schoolClub);
 
+    Optional<MemberJoin> findByMemberAndSchoolClubAndRole(Member member, SchoolClub schoolClub, String role);
+
     List<MemberJoin> findAllBySchoolClub(SchoolClub schoolClub);
 
 }

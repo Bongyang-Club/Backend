@@ -12,11 +12,11 @@ import com.project.bongyang_club_backend.domain.memberJoin.repository.MemberJoin
 import com.project.bongyang_club_backend.global.response.BasicResponse;
 import com.project.bongyang_club_backend.global.security.JWTProvider;
 import com.project.bongyang_club_backend.domain.member.service.MemberService;
-import jakarta.persistence.Basic;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -56,22 +56,28 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
-        List<SchoolClub> schoolClubs = new ArrayList<>();
+        List<MySchoolClubDto> mySchoolClub = new ArrayList<>();
+
 
         for (MemberJoin memberJoin : memberOpt.get().getSchoolClubs()) {
-            schoolClubs.add(memberJoin.getSchoolClub());
+            mySchoolClub.add(MySchoolClubDto.builder()
+                            .clubId(memberJoin.getSchoolClub().getId())
+                            .image(memberJoin.getSchoolClub().getImage())
+                            .build());
         }
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
-                .message("동아리원을 정상적으로 찾았습니다.")
+                .message("가입한 동아리를 정상적으로 찾았습니다.")
                 .count(memberOpt.get().getSchoolClubs().size())
-                .result(schoolClubs)
+                .result(mySchoolClub)
                 .build();
+
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
+
 
     @Override
     public ResponseEntity<BasicResponse> getSchoolClubMembers(Long clubId) {
@@ -432,4 +438,84 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
 
+    @Override
+    public ResponseEntity<BasicResponse> changeClubLeader(ChangeLeaderRequest request) {
+        Optional<Member> clubLeaderOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (clubLeaderOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리장을 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Member clubLeader = clubLeaderOpt.get();
+
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getClubId());
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        SchoolClub schoolClub = schoolClubOpt.get();
+
+        String sGrade = request.getStudentId().substring(0, 1);
+        String sClass = request.getStudentId().substring(1, 2);
+        String sNumber = StringUtils.stripStart(request.getStudentId().substring(2, 4), "0");
+
+        Optional<Member> memberOpt = memberRepository.findByS_gradeAndS_classAndS_numberAndName(sGrade, sClass, sNumber, request.getName());
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("새 동아리장을 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Member member = memberOpt.get();
+
+        Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClubAndRole(member, schoolClub, Role.STUDENT.getKey());
+
+        if (memberJoinOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("1 해당 동아리에 가입되어 있지 않습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Optional<MemberJoin> memberJoinSOpt = memberJoinRepository.findByMemberAndSchoolClub(clubLeader, schoolClub);
+
+        if (memberJoinSOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("2 해당 동아리에 가입되어 있지 않습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        MemberJoin memberJoin = memberJoinOpt.get();
+        MemberJoin memberJoinS = memberJoinSOpt.get();
+
+        member.setRole(Role.CLUB_LEADER.getKey());
+        clubLeader.setRole(Role.STUDENT.getKey());
+        schoolClub.setLeader(member);
+        memberJoin.setRole(Role.CLUB_LEADER.getKey());
+        memberJoinS.setRole(Role.STUDENT.getKey());
+
+        memberRepository.saveAll(List.of(member, clubLeader));
+        schoolClubRepository.save(schoolClub);
+        memberJoinRepository.saveAll(List.of(memberJoin, memberJoinS));
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("정상적으로 변경되었습니다.")
+                .count(1)
+                .result(memberJoin)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
 }
