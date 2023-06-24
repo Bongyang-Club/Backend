@@ -36,6 +36,7 @@ public class SchoolClubController {
         return schoolClubService.getSchoolClubMembers(clubId.getId());
     }
 
+    // 공지 등록
     @PostMapping("/notice")
     public ResponseEntity<BasicResponse> postNotice(@RequestBody @Valid PostNoticeRequest request) {
         return schoolClubService.postNotice(request);
@@ -81,6 +82,12 @@ public class SchoolClubController {
     @PutMapping("/leader/change")
     public ResponseEntity<BasicResponse> changeClubLeader(@RequestBody @Valid ChangeLeaderRequest request) {
         return schoolClubService.changeClubLeader(request);
+    }
+
+    // 공지 삭제
+    @DeleteMapping("/notice")
+    public ResponseEntity<BasicResponse> deleteNotice(@RequestBody @Valid DeleteNoticeRequest request) {
+        return schoolClubService.deleteNotice(request);
     }
 
 }

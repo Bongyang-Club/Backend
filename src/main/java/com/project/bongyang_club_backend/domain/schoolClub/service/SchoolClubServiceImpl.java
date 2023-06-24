@@ -50,6 +50,49 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     private final HttpServletRequest httpServletRequest;
 
     @Override
+    public ResponseEntity<BasicResponse> deleteNotice(DeleteNoticeRequest request) {
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("로그인 후 이용 가능합니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getClubId());
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Member member = memberOpt.get();
+        SchoolClub schoolClub = schoolClubOpt.get();
+
+        if (!schoolClub.getLeader().equals(member)) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("해당 동아리장이 아닙니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        noticeRepository.deleteById(request.getNoticeId());
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("공지를 정상적으로 삭제했습니다.")
+                .count(1)
+                .result(null)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
+
+    @Override
     public ResponseEntity<BasicResponse> getSchoolClubNotices(Long clubId) {
         Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
 
@@ -485,7 +528,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     }
 
     @Override
-    public ResponseEntity<BasicResponse> changeClubLeader(ChangeLeaderRequest request) {
+    public ResponseEntity<BasicResponse>
+    changeClubLeader(ChangeLeaderRequest request) {
         Optional<Member> clubLeaderOpt = jwtProvider.getMemberByToken(httpServletRequest);
 
         if (clubLeaderOpt.isEmpty()) {

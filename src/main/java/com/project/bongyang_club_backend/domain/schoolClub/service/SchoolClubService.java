@@ -28,4 +28,6 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> getSchoolClubNotices(Long clubId);
 
+    ResponseEntity<BasicResponse> deleteNotice(DeleteNoticeRequest request);
+
 }
