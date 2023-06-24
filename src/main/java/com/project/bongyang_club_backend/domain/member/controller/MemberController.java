@@ -21,6 +21,11 @@ public class MemberController {
         return memberService.getMemberByToken();
     }
 
+    @GetMapping("/member/{clubId}")
+    public ResponseEntity<BasicResponse> checkClubLeader(@PathVariable Long clubId) {
+        return memberService.checkClubLeader(clubId);
+    }
+
     @PostMapping("/login" )
     public ResponseEntity<BasicResponse> login(@RequestBody SignRequest request) {
         return memberService.login(request);

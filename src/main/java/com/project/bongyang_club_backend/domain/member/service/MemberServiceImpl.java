@@ -6,6 +6,9 @@ import com.project.bongyang_club_backend.domain.member.repository.MemberReposito
 import com.project.bongyang_club_backend.domain.memberJoin.domain.MemberJoin;
 import com.project.bongyang_club_backend.domain.member.dto.SignRequest;
 import com.project.bongyang_club_backend.domain.member.dto.SignResponse;
+import com.project.bongyang_club_backend.domain.memberJoin.repository.MemberJoinRepository;
+import com.project.bongyang_club_backend.domain.schoolClub.domain.SchoolClub;
+import com.project.bongyang_club_backend.domain.schoolClub.repository.SchoolClubRepository;
 import com.project.bongyang_club_backend.global.response.BasicResponse;
 import com.project.bongyang_club_backend.global.security.JWTProvider;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +28,10 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+
+    private final SchoolClubRepository schoolClubRepository;
+
+    private final MemberJoinRepository memberJoinRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -120,6 +127,47 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return true;
+    }
+
+    @Override
+    public ResponseEntity<BasicResponse> checkClubLeader(Long clubId) {
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(request);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("사용자를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Member member = memberOpt.get();
+
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(clubId);
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClubAndRole(member, schoolClubOpt, Role.CLUB_LEADER.getKey());
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .count(1)
+                .build();
+
+        if (memberJoinOpt.isEmpty()) {
+            basicResponse.setMessage("동아리장이 아닙니다.");
+            basicResponse.setResult(false);
+        } else {
+            basicResponse.setMessage("동아리장 입니다.");
+            basicResponse.setResult(true);
+        }
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
 
     @Override
