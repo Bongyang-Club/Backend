@@ -1,5 +1,6 @@
 package com.project.bongyang_club_backend.domain.notice.domain;
 
+import com.project.bongyang_club_backend.domain.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,9 @@ public class Notice {
 
     @Column(nullable = false)
     private String content;
+
+    @OneToOne
+    private Member writer;
 
     @Column(nullable = false)
     private LocalDate createdAt;

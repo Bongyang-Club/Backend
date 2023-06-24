@@ -616,6 +616,15 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
     @Override
     public ResponseEntity<BasicResponse> postNotice(PostNoticeRequest request) {
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("작성자를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
         Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getClubId());
 
         if (schoolClubOpt.isEmpty()) {
@@ -627,6 +636,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         Notice notice = Notice.builder()
                 .content(request.getNotice())
+                .writer(memberOpt.get())
                 .createdAt(LocalDate.now())
                 .build();
 
