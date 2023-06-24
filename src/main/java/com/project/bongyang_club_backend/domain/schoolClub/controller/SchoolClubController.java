@@ -85,7 +85,7 @@ public class SchoolClubController {
     }
 
     // 공지 삭제
-    @DeleteMapping("/notice")
+    @PutMapping("/notice")
     public ResponseEntity<BasicResponse> deleteNotice(@RequestBody @Valid DeleteNoticeRequest request) {
         return schoolClubService.deleteNotice(request);
     }
