@@ -23,8 +23,7 @@ public class Notice {
     @Column(nullable = false)
     private String content;
 
-    @OneToOne
-    private Member writer;
+    private String writer;
 
     @Column(nullable = false)
     private LocalDate createdAt;

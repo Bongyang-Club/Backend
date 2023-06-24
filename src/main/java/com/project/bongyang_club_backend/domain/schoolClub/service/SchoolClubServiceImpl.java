@@ -615,6 +615,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<BasicResponse> postNotice(PostNoticeRequest request) {
         Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
 
@@ -634,13 +635,17 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
+        SchoolClub schoolClub = schoolClubOpt.get();
+
         Notice notice = Notice.builder()
                 .content(request.getNotice())
-                .writer(memberOpt.get())
+                .writer(memberOpt.get().getName())
                 .createdAt(LocalDate.now())
                 .build();
 
         noticeRepository.save(notice);
+
+        schoolClub.getNotices().add(notice);
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
