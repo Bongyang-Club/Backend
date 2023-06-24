@@ -79,6 +79,18 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
+        Optional<Notice> noticeOpt = noticeRepository.findById(request.getNoticeId());
+
+        if (noticeOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("공지를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Notice notice = noticeOpt.get();
+        schoolClub.getNotices().remove(notice);
+
         noticeRepository.deleteById(request.getNoticeId());
 
         BasicResponse basicResponse = BasicResponse.builder()
