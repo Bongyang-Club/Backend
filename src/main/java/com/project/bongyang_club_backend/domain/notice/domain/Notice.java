@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Entity
 @Builder
@@ -21,6 +23,6 @@ public class Notice {
     private String content;
 
     @Column(nullable = false)
-    private String createdAt;
+    private LocalDate createdAt;
 
 }

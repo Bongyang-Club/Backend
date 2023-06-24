@@ -17,9 +17,16 @@ public class SchoolClubController {
 
     private final SchoolClubService schoolClubService;
 
+    // 자신이 가입한 동아리 리스트
     @GetMapping("/my/club")
     public ResponseEntity<BasicResponse> getMySchoolClub() {
         return schoolClubService.getMySchoolClub();
+    }
+
+    // 동아리 공지 가져오기
+    @GetMapping("/notices/{clubId}")
+    public ResponseEntity<BasicResponse> getSchoolClubNotices(@PathVariable Long clubId) {
+        return schoolClubService.getSchoolClubNotices(clubId);
     }
 
     // 동아리원 리스트
@@ -27,6 +34,11 @@ public class SchoolClubController {
     @PostMapping("/members")
     public ResponseEntity<BasicResponse> getSchoolClubMembers(@RequestBody SchoolClubId clubId) {
         return schoolClubService.getSchoolClubMembers(clubId.getId());
+    }
+
+    @PostMapping("/notice")
+    public ResponseEntity<BasicResponse> postNotice(@RequestBody @Valid PostNoticeRequest request) {
+        return schoolClubService.postNotice(request);
     }
 
     // 동아리 신청
@@ -65,6 +77,7 @@ public class SchoolClubController {
         return schoolClubService.schoolClubApplicationCheck(request, false);
     }
 
+    // 동아리장 변경
     @PutMapping("/leader/change")
     public ResponseEntity<BasicResponse> changeClubLeader(@RequestBody @Valid ChangeLeaderRequest request) {
         return schoolClubService.changeClubLeader(request);

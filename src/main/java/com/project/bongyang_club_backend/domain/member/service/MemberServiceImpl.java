@@ -83,11 +83,11 @@ public class MemberServiceImpl implements MemberService {
         }
 
         SignResponse signResponse = SignResponse.builder()
-                .si_number(member.getSi_number())
+                .si_number(member.getSinumber())
                 .name(member.getName())
                 .role(member.getRole())
                 .studentId(getStudentId(member))
-                .token(jwtProvider.createToken(member.getSi_number(), member.getRole()))
+                .token(jwtProvider.createToken(member.getSinumber(), member.getRole()))
                 .build();
 
         BasicResponse basicResponse = BasicResponse.builder()
@@ -126,10 +126,10 @@ public class MemberServiceImpl implements MemberService {
     public String getStudentId(Member member) {
         String studentId;
 
-        if (member.getS_number().length() > 1) {
-             studentId = member.getS_grade() + member.getS_class() + member.getS_number();
+        if (member.getSnumber().length() > 1) {
+             studentId = member.getSgrade() + member.getSclass() + member.getSnumber();
         } else {
-            studentId = member.getS_grade() + member.getS_class() + "0" + member.getS_number();
+            studentId = member.getSgrade() + member.getSclass() + "0" + member.getSnumber();
         }
 
         log.info("studentId: {}", studentId);

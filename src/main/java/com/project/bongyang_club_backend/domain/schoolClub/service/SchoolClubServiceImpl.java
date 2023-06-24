@@ -3,6 +3,8 @@ package com.project.bongyang_club_backend.domain.schoolClub.service;
 import com.project.bongyang_club_backend.domain.member.enums.Role;
 import com.project.bongyang_club_backend.domain.member.domain.Member;
 import com.project.bongyang_club_backend.domain.member.repository.MemberRepository;
+import com.project.bongyang_club_backend.domain.notice.domain.Notice;
+import com.project.bongyang_club_backend.domain.notice.repository.NoticeRepository;
 import com.project.bongyang_club_backend.domain.postForm.domain.PostForm;
 import com.project.bongyang_club_backend.domain.schoolClub.domain.*;
 import com.project.bongyang_club_backend.domain.schoolClub.dto.*;
@@ -16,11 +18,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,11 +41,54 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
     private final MemberJoinRepository memberJoinRepository;
 
+    private final NoticeRepository noticeRepository;
+
     private final MemberService memberService;
 
     private final JWTProvider jwtProvider;
 
     private final HttpServletRequest httpServletRequest;
+
+    @Override
+    public ResponseEntity<BasicResponse> getSchoolClubNotices(Long clubId) {
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("로그인 후 이용 가능합니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(clubId);
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClub(memberOpt.get(), schoolClubOpt.get());
+
+        if (memberJoinOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("해당 동아리에 가입 되어있지 않습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        List<Notice> notices = schoolClubOpt.get().getNotices();
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("공지를 정상적으로 찾았습니다.")
+                .count(notices.size())
+                .result(notices)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
 
     @Override
     public ResponseEntity<BasicResponse> getMySchoolClub() {
@@ -60,10 +105,12 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
 
         for (MemberJoin memberJoin : memberOpt.get().getSchoolClubs()) {
-            mySchoolClub.add(MySchoolClubDto.builder()
-                            .clubId(memberJoin.getSchoolClub().getId())
-                            .image(memberJoin.getSchoolClub().getImage())
-                            .build());
+            if (memberJoin.getStatus() == 2) {
+                mySchoolClub.add(MySchoolClubDto.builder()
+                        .clubId(memberJoin.getSchoolClub().getId())
+                        .image(memberJoin.getSchoolClub().getImage())
+                        .build());
+            }
         }
 
         BasicResponse basicResponse = BasicResponse.builder()
@@ -73,7 +120,6 @@ public class SchoolClubServiceImpl implements SchoolClubService {
                 .count(memberOpt.get().getSchoolClubs().size())
                 .result(mySchoolClub)
                 .build();
-
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
@@ -461,12 +507,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         }
 
         SchoolClub schoolClub = schoolClubOpt.get();
-
-        String sGrade = request.getStudentId().substring(0, 1);
-        String sClass = request.getStudentId().substring(1, 2);
-        String sNumber = StringUtils.stripStart(request.getStudentId().substring(2, 4), "0");
-
-        Optional<Member> memberOpt = memberRepository.findByS_gradeAndS_classAndS_numberAndName(sGrade, sClass, sNumber, request.getName());
+        Optional<Member> memberOpt = memberRepository.findBySinumberAndName(request.getStudentId(), request.getName());
 
         if (memberOpt.isEmpty()) {
             BasicResponse basicResponse = new BasicResponse()
@@ -495,18 +536,28 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
+        boolean checkMj = false;
+
         MemberJoin memberJoin = memberJoinOpt.get();
         MemberJoin memberJoinS = memberJoinSOpt.get();
-
         member.setRole(Role.CLUB_LEADER.getKey());
-        clubLeader.setRole(Role.STUDENT.getKey());
-        schoolClub.setLeader(member);
         memberJoin.setRole(Role.CLUB_LEADER.getKey());
         memberJoinS.setRole(Role.STUDENT.getKey());
 
+        memberJoinRepository.saveAll(List.of(memberJoin, memberJoinS));
+
+        for (MemberJoin mj : memberJoinRepository.findAllByMember(clubLeader)) {
+            if (mj.getRole().equals(Role.CLUB_LEADER.getKey())) checkMj = true;
+        }
+
+        if (!checkMj) {
+            clubLeader.setRole(Role.STUDENT.getKey());
+        }
+
+        schoolClub.setLeader(member);
+
         memberRepository.saveAll(List.of(member, clubLeader));
         schoolClubRepository.save(schoolClub);
-        memberJoinRepository.saveAll(List.of(memberJoin, memberJoinS));
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
@@ -518,4 +569,34 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
+
+    @Override
+    public ResponseEntity<BasicResponse> postNotice(PostNoticeRequest request) {
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getClubId());
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Notice notice = Notice.builder()
+                .content(request.getNotice())
+                .createdAt(LocalDate.now())
+                .build();
+
+        noticeRepository.save(notice);
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("정상적으로 변경되었습니다.")
+                .count(1)
+                .result(notice)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
+
 }

@@ -18,4 +18,6 @@ public interface MemberJoinRepository extends JpaRepository<MemberJoin, Long> {
 
     List<MemberJoin> findAllBySchoolClub(SchoolClub schoolClub);
 
+    List<MemberJoin> findAllByMember(Member member);
+
 }

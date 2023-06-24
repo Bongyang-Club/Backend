@@ -35,21 +35,22 @@ public class MemberJoin {
     // 동아리원: member // 동아리장 leader // 선생님 teacher
     private String role;
 
-    // 1: 보류 // 2: 승인 // 3: 거절
+    // 1: 보류 // 2: 승인 // 3: 거절 // 4: 탈퇴 //
     @Column(nullable = false)
     private Integer status;
 
     @Column(nullable = false)
     private LocalDateTime applicationAt;
 
-    @Column(nullable = false)
     private LocalDateTime joinAt;
+
+    private LocalDateTime withdrawAt;
 
     public SchoolClubApplicationResponse toResponse() {
         return SchoolClubApplicationResponse.builder()
                 .memberJoinId(id)
                 .name(member.getName())
-                .studentId(member.getS_number().length() == 1 ? member.getS_grade() + member.getS_class() + "0" + member.getS_number() : member.getS_grade() + member.getS_class()  + member.getS_number())
+                .studentId(member.getSnumber().length() == 1 ? member.getSgrade() + member.getSclass() + "0" + member.getSnumber() : member.getSgrade() + member.getSclass()  + member.getSnumber())
                 .applicationAt(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(applicationAt))
                 .build();
     }

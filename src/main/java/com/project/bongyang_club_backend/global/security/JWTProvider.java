@@ -99,7 +99,7 @@ public class JWTProvider {
         try {
             String bearerToken = resolveToken(httpServletRequest);
 
-            if (validateToken(bearerToken)) {
+            if (!validateToken(bearerToken)) {
                 return Optional.empty();
             }
 

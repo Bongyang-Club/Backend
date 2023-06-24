@@ -23,13 +23,13 @@ public class SignResponse {
     private String token;
 
     public SignResponse(Member member) {
-        this.si_number = member.getSi_number();
+        this.si_number = member.getSinumber();
         this.name = member.getName();
-        this.studentId = member.getS_grade() + member.getS_class();
-        if (member.getS_number().length() == 1) {
+        this.studentId = member.getSgrade() + member.getSclass();
+        if (member.getSnumber().length() == 1) {
             this.studentId += "0";
         }
-        this.studentId += member.getS_number();
+        this.studentId += member.getSnumber();
         this.role = member.getRole();
     }
 

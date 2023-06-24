@@ -24,4 +24,8 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> changeClubLeader(ChangeLeaderRequest request);
 
+    ResponseEntity<BasicResponse> postNotice(PostNoticeRequest request);
+
+    ResponseEntity<BasicResponse> getSchoolClubNotices(Long clubId);
+
 }

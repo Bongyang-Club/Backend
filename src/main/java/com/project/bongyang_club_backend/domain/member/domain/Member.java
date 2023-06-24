@@ -17,7 +17,7 @@ public class Member  {
 
     // 아이디
     @Id
-    private String si_number;
+    private String sinumber;
 
     @JsonIgnore
     @Column(nullable = false)
@@ -26,11 +26,11 @@ public class Member  {
     @Column(nullable = false)
     private String name;
 
-    private String s_grade;
+    private String sgrade;
 
-    private String s_class;
+    private String sclass;
 
-    private String s_number;
+    private String snumber;
 
     @OneToMany(mappedBy = "member")
     private List<MemberJoin> schoolClubs;
