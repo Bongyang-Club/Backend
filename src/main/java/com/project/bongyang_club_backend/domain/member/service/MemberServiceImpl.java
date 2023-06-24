@@ -151,7 +151,7 @@ public class MemberServiceImpl implements MemberService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
-        Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClubAndRole(member, schoolClubOpt, Role.CLUB_LEADER.getKey());
+        Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClubAndRole(member, schoolClubOpt.get(), Role.CLUB_LEADER.getKey());
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())

@@ -576,7 +576,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClubAndRole(member, schoolClub, Role.STUDENT.getKey());
 
-        if (memberJoinOpt.isEmpty()) {
+        if (memberJoinOpt.isEmpty() || memberJoinOpt.get().getStatus() != 2) {
             BasicResponse basicResponse = new BasicResponse()
                     .error("1 해당 동아리에 가입되어 있지 않습니다.");
 

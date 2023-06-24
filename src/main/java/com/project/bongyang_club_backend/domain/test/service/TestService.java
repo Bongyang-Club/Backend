@@ -192,7 +192,7 @@ public class TestService {
                     .member(student1)
                     .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
-                    .status(1)
+                    .status(2)
                     .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
@@ -201,7 +201,7 @@ public class TestService {
                     .member(student2)
                     .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
-                    .status(1)
+                    .status(2)
                     .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
@@ -210,7 +210,7 @@ public class TestService {
                     .member(student3)
                     .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
-                    .status(1)
+                    .status(2)
                     .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
@@ -219,7 +219,7 @@ public class TestService {
                     .member(student4)
                     .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
-                    .status(1)
+                    .status(2)
                     .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
@@ -228,7 +228,7 @@ public class TestService {
                     .member(student5)
                     .schoolClub(club2)
                     .role(Role.STUDENT.getKey())
-                    .status(1)
+                    .status(2)
                     .joinAt(LocalDateTime.now())
                     .applicationAt(LocalDateTime.now())
                     .build());
