@@ -184,4 +184,51 @@ public class MemberServiceImpl implements MemberService {
 
         return studentId;
     }
+
+    @Override
+    public ResponseEntity<BasicResponse> getSchoolClubs(String name) {
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(request);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("사용자를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Member member = memberOpt.get();
+
+        if (!member.getRole().equals(Role.ADMIN.getKey())) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("권한이 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        List<SchoolClub> schoolClubs;
+
+        if (name == null) {
+            schoolClubs = schoolClubRepository.findAll();
+        } else {
+            schoolClubs = schoolClubRepository.findAllByName(name);
+        }
+        
+        if (schoolClubs.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리가 존재하지 않습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("동아리를 정상적으로 찾았습니다.")
+                .count(schoolClubs.size())
+                .result(schoolClubs)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
+
 }

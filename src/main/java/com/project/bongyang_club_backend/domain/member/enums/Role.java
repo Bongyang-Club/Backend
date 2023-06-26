@@ -11,7 +11,9 @@ public enum Role {
 
     CLUB_LEADER("ROLE_CLUB_LEADER", "동아리장"),
 
-    TEACHER("ROLE_TEACHER", "선생님");
+    TEACHER("ROLE_TEACHER", "선생님"),
+
+    ADMIN("ROLE_ADMIN", "관리자");
 
     private final String key;
 

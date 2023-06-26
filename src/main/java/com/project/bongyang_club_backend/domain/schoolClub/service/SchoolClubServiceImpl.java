@@ -181,8 +181,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
 
     @Override
-    public ResponseEntity<BasicResponse> getSchoolClubMembers(Long clubId) {
-        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(clubId);
+    public ResponseEntity<BasicResponse> getSchoolClubMembers(SchoolClubId clubId, boolean check) {
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(clubId.getId());
 
         if (schoolClubOpt.isEmpty()) {
             BasicResponse basicResponse = new BasicResponse()
@@ -214,16 +214,56 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         List<MemberJoin> memberJoins = schoolClub.getMembers();
         List<SchoolClubMemberDto> memberDtos = new ArrayList<>();
 
-        for (MemberJoin memberJoin : memberJoins) {
-            Member clubMember = memberJoin.getMember();
+        if (check) {
+            for (MemberJoin memberJoin : memberJoins) {
+                if (memberJoin.getStatus() == 2) {
+                    Member clubMember = memberJoin.getMember();
 
-            memberDtos.add(
-                    SchoolClubMemberDto.builder()
-                    .name(clubMember.getName())
-                    .studentId(memberService.getStudentId(member))
-                    .joinAt(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(memberJoin.getJoinAt()))
-                    .build()
-            );
+                    memberDtos.add(
+                            SchoolClubMemberDto.builder()
+                                    .name(clubMember.getName())
+                                    .studentId(memberService.getStudentId(member))
+                                    .joinAt(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(memberJoin.getJoinAt()))
+                                    .build()
+                    );
+                }
+            }
+        } else {
+            for (MemberJoin memberJoin : memberJoins) {
+                if (memberJoin.getStatus() == 1) {
+                    Member clubMember = memberJoin.getMember();
+
+                    memberDtos.add(
+                            SchoolClubMemberDto.builder()
+                                    .name(clubMember.getName())
+                                    .studentId(memberService.getStudentId(member))
+                                    .joinAt(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(memberJoin.getJoinAt()))
+                                    .build()
+                    );
+                }
+            }
+        }
+
+        String findValue = clubId.getFindValue();
+
+        if (findValue != null) {
+            List<SchoolClubMemberDto> memberDtofs = new ArrayList<>();
+
+            for (SchoolClubMemberDto memberDto : memberDtos) {
+                if (memberDto.getName().contains(findValue) || memberDto.getStudentId().contains(findValue)) {
+                    memberDtofs.add(memberDto);
+                }
+            }
+
+            BasicResponse basicResponse = BasicResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message(findValue + "가 포함된 동아리원을 정상적으로 찾았습니다.")
+                    .count(memberDtofs.size())
+                    .result(memberDtofs)
+                    .build();
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
         BasicResponse basicResponse = BasicResponse.builder()
@@ -457,7 +497,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         }
 
         if (request.getInterview()) {
-
+//
         }
 
         return null;

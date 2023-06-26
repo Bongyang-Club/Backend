@@ -7,4 +7,6 @@ public class SchoolClubId {
 
     private Long id;
 
+    private String findValue;
+
 }

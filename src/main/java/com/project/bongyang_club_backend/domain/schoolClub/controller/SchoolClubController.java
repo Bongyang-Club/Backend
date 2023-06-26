@@ -33,7 +33,12 @@ public class SchoolClubController {
     // clubName에는 공백이 포함되지 않으므로 공백은 "_"로 대체한다.
     @PostMapping("/members")
     public ResponseEntity<BasicResponse> getSchoolClubMembers(@RequestBody SchoolClubId clubId) {
-        return schoolClubService.getSchoolClubMembers(clubId.getId());
+        return schoolClubService.getSchoolClubMembers(clubId, true);
+    }
+
+    @PostMapping("/application/members")
+    public ResponseEntity<BasicResponse> getSchoolClubApplicationMembers(@RequestBody SchoolClubId clubId) {
+        return schoolClubService.getSchoolClubMembers(clubId, false);
     }
 
     // 공지 등록

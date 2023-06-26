@@ -10,7 +10,7 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> getMySchoolClub();
 
-    ResponseEntity<BasicResponse> getSchoolClubMembers(Long clubId);
+    ResponseEntity<BasicResponse> getSchoolClubMembers(SchoolClubId clubId, boolean check);
 
     ResponseEntity<BasicResponse> schoolClubEnroll(SchoolClubEnrollRequest request);
 

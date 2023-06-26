@@ -19,4 +19,6 @@ public interface MemberService {
 
     ResponseEntity<BasicResponse> checkClubLeader(Long clubId);
 
+    ResponseEntity<BasicResponse> getSchoolClubs(String name);
+
 }
