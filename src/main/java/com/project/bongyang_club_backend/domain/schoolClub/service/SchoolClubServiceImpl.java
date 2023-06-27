@@ -483,6 +483,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
                 return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
             }
 
+            // gma
+
             if (request.getStartDate().toString().isBlank() || request.getEndDate().toString().isBlank()) {
                 BasicResponse basicResponse = new BasicResponse()
                         .error("구글폼 기한을 확인해주세요.");
