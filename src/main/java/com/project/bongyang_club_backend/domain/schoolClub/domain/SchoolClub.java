@@ -60,7 +60,7 @@ public class SchoolClub {
     @Column(nullable = false)
     private Integer m_type;
 
-    // 1: 예비 동아리, 2: 정식 동아리 등등, 3: 삭제
+    // 1: 예비 동아리, 2: 정식 동아리 등등
     @Column(nullable = false)
     private Integer status;
 
