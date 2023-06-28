@@ -4,6 +4,7 @@ import com.project.bongyang_club_backend.domain.schoolClub.dto.*;
 import com.project.bongyang_club_backend.global.response.BasicResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface SchoolClubService {
@@ -18,9 +19,7 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> schoolClubApplicationList(SchoolClubApplicationListRequest request);
 
-    ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request);
-
-    //gma
+    ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request, MultipartFile poster);
 
     ResponseEntity<BasicResponse> schoolClubApplicationCheck(SchoolClubApplicationCheckRequest request, boolean approve);
 

@@ -31,10 +31,8 @@ public class SchoolClubPromotionApplicationRequest {
     // 면접 or 테스트
     // false: 개인 // true: 전체
     private Boolean check;
-
     // 시간(면접 or 테스트)
     private LocalDateTime checkTime;
-
     // 장소(면접 or 테스트)
     private String checkPlace;
 

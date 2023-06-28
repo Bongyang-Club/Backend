@@ -6,11 +6,14 @@ import com.project.bongyang_club_backend.domain.member.repository.MemberReposito
 import com.project.bongyang_club_backend.domain.notice.domain.Notice;
 import com.project.bongyang_club_backend.domain.notice.repository.NoticeRepository;
 import com.project.bongyang_club_backend.domain.postForm.domain.PostForm;
+import com.project.bongyang_club_backend.domain.postForm.repository.PostFormRepository;
 import com.project.bongyang_club_backend.domain.schoolClub.domain.*;
 import com.project.bongyang_club_backend.domain.schoolClub.dto.*;
 import com.project.bongyang_club_backend.domain.schoolClub.repository.SchoolClubRepository;
 import com.project.bongyang_club_backend.domain.memberJoin.domain.MemberJoin;
 import com.project.bongyang_club_backend.domain.memberJoin.repository.MemberJoinRepository;
+import com.project.bongyang_club_backend.domain.target.domain.Target;
+import com.project.bongyang_club_backend.domain.target.service.TargetSerivce;
 import com.project.bongyang_club_backend.global.response.BasicResponse;
 import com.project.bongyang_club_backend.global.security.JWTProvider;
 import com.project.bongyang_club_backend.domain.member.service.MemberService;
@@ -21,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,9 +45,13 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
     private final MemberJoinRepository memberJoinRepository;
 
+    private final PostFormRepository postFormRepository;
+
     private final NoticeRepository noticeRepository;
 
     private final MemberService memberService;
+
+    private final TargetSerivce targetSerivce;
 
     private final JWTProvider jwtProvider;
 
@@ -465,8 +473,17 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     }
 
     @Override
-    public ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request) {
+    public ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request, MultipartFile poster) {
         PostForm postForm = new PostForm();
+
+//        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findByName(request.getSchoolClubName());
+//
+//        if (schoolClubOpt.isEmpty()) {
+//            BasicResponse basicResponse = new BasicResponse()
+//                    .error("동아리를 찾을 수 없습니다.");
+//
+//            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+//        }
 
         if (request.getInterview() && request.getTest()) {
             BasicResponse basicResponse = new BasicResponse()
@@ -483,8 +500,6 @@ public class SchoolClubServiceImpl implements SchoolClubService {
                 return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
             }
 
-            // gma
-
             if (request.getStartDate().toString().isBlank() || request.getEndDate().toString().isBlank()) {
                 BasicResponse basicResponse = new BasicResponse()
                         .error("구글폼 기한을 확인해주세요.");
@@ -499,10 +514,38 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         }
 
         if (request.getInterview()) {
-//
+            postForm.setIv_check(true);
         }
 
-        return null;
+        if (request.getTest()) {
+            postForm.setT_check(true);
+            postForm.setT_time(DateTimeFormatter.ofPattern("yyyy.MM.dd hh:mm").format(request.getCheckTime()));
+            postForm.setT_place(request.getCheckPlace());
+
+            List<Target> targets = targetSerivce.createTarget(request.getTarget());
+
+            postForm.setR_targets(targets);
+            postForm.setR_c_total(targets.size());
+            postForm.setR_s_total(targetSerivce.countPeople(request.getTarget()));
+        }
+
+        postForm.setP_how(request.getA_method());
+        postForm.setP_place(request.getA_place());
+        postForm.setP_time(request.getA_time());
+
+//        postForm.set
+
+        postFormRepository.save(postForm);
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("홍보 신청이 정상적으로 완료되었습니다.")
+                .count(1)
+                .result(postForm)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
 
     @Override

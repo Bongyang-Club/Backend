@@ -1,5 +1,6 @@
 package com.project.bongyang_club_backend.domain.schoolClub.controller;
 
+import com.project.bongyang_club_backend.domain.promotionPost.service.PromotionPostService;
 import com.project.bongyang_club_backend.domain.schoolClub.dto.*;
 import com.project.bongyang_club_backend.global.response.BasicResponse;
 import com.project.bongyang_club_backend.domain.schoolClub.service.SchoolClubService;
@@ -8,12 +9,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/schoolclub")
 @Tag(name = "SchoolClub", description = "SchoolClub Management API's")
 public class SchoolClubController {
+
+    private final PromotionPostService promotionPostService;
 
     private final SchoolClubService schoolClubService;
 
@@ -27,6 +31,16 @@ public class SchoolClubController {
     @GetMapping("/notices/{clubId}")
     public ResponseEntity<BasicResponse> getSchoolClubNotices(@PathVariable Long clubId) {
         return schoolClubService.getSchoolClubNotices(clubId);
+    }
+
+    @GetMapping("/promotions")
+    public ResponseEntity<BasicResponse> getPromotions() {
+        return promotionPostService.getPromotionPosts();
+    }
+
+    @GetMapping("/promotion/{id}")
+    public ResponseEntity<BasicResponse> getPromotionById(@PathVariable Long id) {
+        return promotionPostService.getPromotionPostById(id);
     }
 
     // 동아리원 리스트
@@ -67,8 +81,9 @@ public class SchoolClubController {
 
     // 개발 중
     @PostMapping("/application/promotion")
-    public ResponseEntity<BasicResponse> schoolClubPromotionApplication(@RequestBody @Valid SchoolClubPromotionApplicationRequest request) {
-        return schoolClubService.schoolClubPromotionApplication(request);
+    public ResponseEntity<BasicResponse> schoolClubPromotionApplication(@RequestPart @Valid SchoolClubPromotionApplicationRequest request,
+                                                                        @RequestPart MultipartFile poster) {
+        return schoolClubService.schoolClubPromotionApplication(request, poster);
     }
 
     // CLUB_LEADER // 학생 -> 동아리 신청 승인

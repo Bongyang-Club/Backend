@@ -19,9 +19,6 @@ public class PostForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @OneToOne
-    private SchoolClub schoolClubId;
 
     // 구글 폼
     private Boolean gf_check;
@@ -36,10 +33,10 @@ public class PostForm {
     // 면접
     private Boolean iv_check;
     // 참고 내용
-    private String iv_refernce;
-    // 스케쥴
-    @OneToMany
-    private List<Schedule> iv_schedules;
+//    private String iv_refernce;
+//    // 스케쥴
+//    @OneToMany
+//    private List<Schedule> iv_schedules;
 
 
     // 테스트
@@ -72,9 +69,6 @@ public class PostForm {
 
 
     // 문의
-    // 동아리 장의 학번 이름
-    @OneToOne
-    private Member member;
     // 카톡
     private String i_kakao;
     // 인스타

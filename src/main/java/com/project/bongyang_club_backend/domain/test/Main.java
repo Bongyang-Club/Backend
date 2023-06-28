@@ -34,7 +34,6 @@ public class Main {
     private static ControlTable table;
 
     public static void main(String[] args) throws Exception {
-
         String filePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator;
         String imgFilePath = filePath + "sample.jpg";
         HWPFile hwpFile = HWPReader.fromFile(filePath + "clubJournalExample.hwp");

@@ -4,6 +4,11 @@ import com.project.bongyang_club_backend.domain.promotionPost.domain.PromotionPo
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface promotionPostRepository extends JpaRepository<PromotionPost, Long> {
+public interface PromotionPostRepository extends JpaRepository<PromotionPost, Long> {
+
+    List<PromotionPost> findAllByStatus(Boolean status);
+
 }
