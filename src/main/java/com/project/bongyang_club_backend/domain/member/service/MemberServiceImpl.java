@@ -1,5 +1,6 @@
 package com.project.bongyang_club_backend.domain.member.service;
 
+import com.project.bongyang_club_backend.domain.member.dto.ClubListDto;
 import com.project.bongyang_club_backend.domain.member.enums.Role;
 import com.project.bongyang_club_backend.domain.member.domain.Member;
 import com.project.bongyang_club_backend.domain.member.repository.MemberRepository;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -223,12 +225,25 @@ public class MemberServiceImpl implements MemberService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
+        List<ClubListDto> clubListDtos = new ArrayList<>();
+
+        for (SchoolClub schoolClub : schoolClubs) {
+            clubListDtos.add(
+                    ClubListDto.builder()
+                            .clubId(schoolClub.getId())
+                            .clubName(schoolClub.getName())
+                            .leaderName(schoolClub.getLeader().getName())
+                            .type(schoolClub.getM_type() == 1 ? "자율" : "전공")
+                            .build()
+            );
+        }
+
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("동아리를 정상적으로 찾았습니다.")
                 .count(schoolClubs.size())
-                .result(schoolClubs)
+                .result(clubListDtos)
                 .build();
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
