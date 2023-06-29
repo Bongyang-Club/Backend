@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/schoolclub")
@@ -82,7 +84,7 @@ public class SchoolClubController {
     // 개발 중
     @PostMapping("/application/promotion")
     public ResponseEntity<BasicResponse> schoolClubPromotionApplication(@RequestPart @Valid SchoolClubPromotionApplicationRequest request,
-                                                                        @RequestPart MultipartFile poster) {
+                                                                        @RequestPart MultipartFile poster) throws IOException {
         return schoolClubService.schoolClubPromotionApplication(request, poster);
     }
 
