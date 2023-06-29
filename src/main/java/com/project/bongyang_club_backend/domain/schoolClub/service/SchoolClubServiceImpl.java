@@ -804,10 +804,12 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
 
-        MemberJoin memberJoin = memberJoinOpt.get();
-        memberJoin.setStatus(4);
+        memberJoinRepository.delete(memberJoinOpt.get());
 
-        memberJoinRepository.save(memberJoin);
+//        MemberJoin memberJoin = memberJoinOpt.get();
+//        memberJoin.setStatus(4);
+//
+//        memberJoinRepository.save(memberJoin);
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
