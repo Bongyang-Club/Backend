@@ -816,7 +816,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
                 .httpStatus(HttpStatus.OK)
                 .message("탈퇴가 정상적으로 처리되어 되었습니다.")
                 .count(1)
-                .result(memberJoin)
+                .result(null)
                 .build();
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
