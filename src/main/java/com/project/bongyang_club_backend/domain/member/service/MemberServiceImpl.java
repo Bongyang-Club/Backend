@@ -93,9 +93,12 @@ public class MemberServiceImpl implements MemberService {
                 .si_number(member.getSinumber())
                 .name(member.getName())
                 .role(member.getRole())
-                .studentId(getStudentId(member))
                 .token(jwtProvider.createToken(member.getSinumber(), member.getRole()))
                 .build();
+
+        if (member.getRole().equals(Role.STUDENT.getKey())) {
+            signResponse.setStudentId(getStudentId(member));
+        }
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
