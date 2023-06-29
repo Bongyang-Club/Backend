@@ -129,7 +129,7 @@ public class TestService {
                     .role(Role.ADMIN.getKey())
                     .build();
 
-            members.addAll(List.of(student1, student2, student3, student4, student5, teacher1, teacher2, teacher3, clubLeader1, clubLeader2));
+            members.addAll(List.of(student1, student2, student3, student4, student5, teacher1, teacher2, teacher3, clubLeader1, clubLeader2, admin));
 
             memberRepository.saveAll(members);
 
