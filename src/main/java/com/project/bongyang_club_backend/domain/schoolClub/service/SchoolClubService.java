@@ -33,4 +33,6 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> deleteNotice(DeleteNoticeRequest request);
 
+    ResponseEntity<BasicResponse> clubWithDraw(SchoolClubId clubId);
+
 }

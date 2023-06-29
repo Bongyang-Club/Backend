@@ -106,6 +106,11 @@ public class SchoolClubController {
         return schoolClubService.changeClubLeader(request);
     }
 
+    @PutMapping("/withdraw")
+    public ResponseEntity<BasicResponse> clubWithDraw(@RequestBody SchoolClubId clubId) {
+        return schoolClubService.clubWithDraw(clubId);
+    }
+
     // 공지 삭제
     @PutMapping("/notice")
     public ResponseEntity<BasicResponse> deleteNotice(@RequestBody @Valid DeleteNoticeRequest request) {
