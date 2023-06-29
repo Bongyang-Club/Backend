@@ -581,7 +581,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         MemberJoin memberJoin = memberJoinOpt.get();
 
-        if (!memberJoin.getRole().equals("leader")) {
+        if (!memberJoin.getRole().equals(Role.CLUB_LEADER.getKey())) {
             BasicResponse basicResponse = new BasicResponse()
                     .error("동아리 장의 권한을 가지고 있지 않습니다.");
 
@@ -637,7 +637,6 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         }
 
         Member clubLeader = clubLeaderOpt.get();
-
         Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getClubId());
 
         if (schoolClubOpt.isEmpty()) {
