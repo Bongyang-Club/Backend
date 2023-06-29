@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @Service
 public interface SchoolClubService {
 
@@ -19,7 +21,7 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> schoolClubApplicationList(SchoolClubApplicationListRequest request);
 
-    ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request, MultipartFile poster);
+    ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request, MultipartFile poster) throws IOException;
 
     ResponseEntity<BasicResponse> schoolClubApplicationCheck(SchoolClubApplicationCheckRequest request, boolean approve);
 

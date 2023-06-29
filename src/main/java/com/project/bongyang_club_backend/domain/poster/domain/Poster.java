@@ -7,6 +7,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Poster {
@@ -20,5 +21,7 @@ public class Poster {
 
     @Column(nullable = false)
     private String name;
+
+    private String saveName;
 
 }

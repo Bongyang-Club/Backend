@@ -13,12 +13,12 @@ public class
 
 WebConfig implements WebMvcConfigurer {
 
-    private final Path FILE_ROOT = Paths.get("./post").toAbsolutePath().normalize();
+    private final Path FILE_ROOT = Paths.get("./poster").toAbsolutePath().normalize();
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/post/**")
+                .addResourceHandler("/poster/**")
                 .addResourceLocations(FILE_ROOT.toUri().toString());
     }
 

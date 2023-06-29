@@ -7,6 +7,9 @@ import com.project.bongyang_club_backend.domain.notice.domain.Notice;
 import com.project.bongyang_club_backend.domain.notice.repository.NoticeRepository;
 import com.project.bongyang_club_backend.domain.postForm.domain.PostForm;
 import com.project.bongyang_club_backend.domain.postForm.repository.PostFormRepository;
+import com.project.bongyang_club_backend.domain.poster.service.PosterService;
+import com.project.bongyang_club_backend.domain.promotionPost.domain.PromotionPost;
+import com.project.bongyang_club_backend.domain.promotionPost.repository.PromotionPostRepository;
 import com.project.bongyang_club_backend.domain.schoolClub.domain.*;
 import com.project.bongyang_club_backend.domain.schoolClub.dto.*;
 import com.project.bongyang_club_backend.domain.schoolClub.repository.SchoolClubRepository;
@@ -26,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -49,9 +53,13 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
     private final NoticeRepository noticeRepository;
 
+    private final PromotionPostRepository promotionPostRepository;
+
     private final MemberService memberService;
 
     private final TargetSerivce targetSerivce;
+
+    private final PosterService posterService;
 
     private final JWTProvider jwtProvider;
 
@@ -454,7 +462,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         List<SchoolClubApplicationResponse> schoolClubApplicationResponses = new ArrayList<>();
 
         for (MemberJoin memberJoin : memberJoins) {
-            if (memberJoin.getRole().equals("ROLE_CLUB_LEADER")) {
+            if (memberJoin.getRole().equals("ROLE_CLUB_LEADER") || memberJoin.getStatus() != 1) {
                 continue;
             }
 
@@ -473,17 +481,19 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     }
 
     @Override
-    public ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request, MultipartFile poster) {
+    public ResponseEntity<BasicResponse> schoolClubPromotionApplication(SchoolClubPromotionApplicationRequest request, MultipartFile poster) throws IOException {
         PostForm postForm = new PostForm();
 
-//        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findByName(request.getSchoolClubName());
-//
-//        if (schoolClubOpt.isEmpty()) {
-//            BasicResponse basicResponse = new BasicResponse()
-//                    .error("동아리를 찾을 수 없습니다.");
-//
-//            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
-//        }
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findByName(request.getSchoolClubName());
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        SchoolClub schoolClub = schoolClubOpt.get();
 
         if (request.getInterview() && request.getTest()) {
             BasicResponse basicResponse = new BasicResponse()
@@ -533,9 +543,18 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         postForm.setP_place(request.getA_place());
         postForm.setP_time(request.getA_time());
 
-//        postForm.set
-
         postFormRepository.save(postForm);
+
+        PromotionPost promotionPost = PromotionPost.builder()
+                .schoolClub(schoolClub)
+                .postForm(postForm)
+                .poster(posterService.savePosters(List.of(poster)).get(0))
+                .build();
+
+        promotionPostRepository.save(promotionPost);
+
+        schoolClub.setPromotionPost(promotionPost);
+        schoolClubRepository.save(schoolClub);
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
