@@ -122,6 +122,13 @@ public class TestService {
                     .role(Role.TEACHER.getKey())
                     .build();
 
+            Member admin = Member.builder()
+                    .sinumber("admin")
+                    .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
+                    .name("admin")
+                    .role(Role.ADMIN.getKey())
+                    .build();
+
             members.addAll(List.of(student1, student2, student3, student4, student5, teacher1, teacher2, teacher3, clubLeader1, clubLeader2));
 
             memberRepository.saveAll(members);
