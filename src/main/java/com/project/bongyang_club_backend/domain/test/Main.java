@@ -35,16 +35,16 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         String filePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator;
-        String imgFilePath = filePath + "sample.jpg";
+//        String imgFilePath = filePath + "sample.jpg";
         HWPFile hwpFile = HWPReader.fromFile(filePath + "clubJournalExample.hwp");
 
         if (hwpFile != null) {
             ControlTable title = findTable1(hwpFile);
             table = findTable2(hwpFile);
 
-            IMPL_InsertPicture(hwpFile, "필드3", imgFilePath);
-            IMPL_InsertPicture(hwpFile, "필드2", imgFilePath);
-            IMPL_InsertPicture(hwpFile, "필드1", imgFilePath);
+//            IMPL_InsertPicture(hwpFile, "필드3", imgFilePath);
+//            IMPL_InsertPicture(hwpFile, "필드2", imgFilePath);
+//            IMPL_InsertPicture(hwpFile, "필드1", imgFilePath);
 
             settingTitle(title);
             settingTable(table);

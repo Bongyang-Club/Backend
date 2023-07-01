@@ -13,13 +13,19 @@ public class
 
 WebConfig implements WebMvcConfigurer {
 
-    private final Path FILE_ROOT = Paths.get("./poster").toAbsolutePath().normalize();
+    private final Path FILE_POSTER_ROOT = Paths.get("./poster").toAbsolutePath().normalize();
+
+    private final Path FILE_JOURNAL_ROOT = Paths.get("./journal").toAbsolutePath().normalize();
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/poster/**")
-                .addResourceLocations(FILE_ROOT.toUri().toString());
+                .addResourceLocations(FILE_POSTER_ROOT.toUri().toString());
+
+        registry
+                .addResourceHandler("/journal/**")
+                .addResourceLocations(FILE_JOURNAL_ROOT.toUri().toString());
     }
 
     @Override

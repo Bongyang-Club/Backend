@@ -88,6 +88,11 @@ public class SchoolClubController {
         return schoolClubService.schoolClubPromotionApplication(request, poster);
     }
 
+    @PostMapping("/journal")
+    public ResponseEntity<BasicResponse> writeJournal(@RequestBody @Valid WriteClubJournalRequest request) throws Exception {
+        return schoolClubService.writeJournal(request);
+    }
+
     // CLUB_LEADER // 학생 -> 동아리 신청 승인
     @PutMapping("/application/approve")
     public ResponseEntity<BasicResponse> schoolClubApplicationApprove(@RequestBody @Valid SchoolClubApplicationCheckRequest request) {

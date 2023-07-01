@@ -35,4 +35,6 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> clubWithDraw(SchoolClubId clubId);
 
+    ResponseEntity<BasicResponse> writeJournal(WriteClubJournalRequest request) throws Exception;
+
 }

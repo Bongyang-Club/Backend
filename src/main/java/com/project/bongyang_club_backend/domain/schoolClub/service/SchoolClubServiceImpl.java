@@ -1,5 +1,6 @@
 package com.project.bongyang_club_backend.domain.schoolClub.service;
 
+import com.project.bongyang_club_backend.domain.clubJournal.service.ClubJournalService;
 import com.project.bongyang_club_backend.domain.member.enums.Role;
 import com.project.bongyang_club_backend.domain.member.domain.Member;
 import com.project.bongyang_club_backend.domain.member.repository.MemberRepository;
@@ -22,6 +23,10 @@ import com.project.bongyang_club_backend.global.security.JWTProvider;
 import com.project.bongyang_club_backend.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import kr.dogfoot.hwplib.object.HWPFile;
+import kr.dogfoot.hwplib.object.bodytext.control.ControlTable;
+import kr.dogfoot.hwplib.reader.HWPReader;
+import kr.dogfoot.hwplib.writer.HWPWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -60,6 +66,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     private final TargetSerivce targetSerivce;
 
     private final PosterService posterService;
+
+    private final ClubJournalService clubJournalService;
 
     private final JWTProvider jwtProvider;
 
@@ -821,4 +829,19 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
+
+    @Override
+    public ResponseEntity<BasicResponse> writeJournal(WriteClubJournalRequest request) throws Exception {
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getClubId());
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾지못하였습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        return clubJournalService.writeClubJournal(request, schoolClubOpt.get());
+    }
+
 }
