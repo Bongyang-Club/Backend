@@ -1,6 +1,8 @@
 package com.project.bongyang_club_backend.domain.schoolClub.service;
 
 import com.project.bongyang_club_backend.domain.clubJournal.service.ClubJournalService;
+import com.project.bongyang_club_backend.domain.image.domain.Image;
+import com.project.bongyang_club_backend.domain.image.service.ImageService;
 import com.project.bongyang_club_backend.domain.member.enums.Role;
 import com.project.bongyang_club_backend.domain.member.domain.Member;
 import com.project.bongyang_club_backend.domain.member.repository.MemberRepository;
@@ -68,6 +70,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
     private final PosterService posterService;
 
+    private final ImageService imageService;
+
     private final ClubJournalService clubJournalService;
 
     private final JWTProvider jwtProvider;
@@ -75,8 +79,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     private final HttpServletRequest httpServletRequest;
 
     @Override
-    public ResponseEntity<BasicResponse> getSchoolClubById(SchoolClubId request) {
-        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getId());
+    public ResponseEntity<BasicResponse> getSchoolClubById(Long request) {
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request);
 
         if (schoolClubOpt.isEmpty()) {
             BasicResponse basicResponse = new BasicResponse()
@@ -873,6 +877,35 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         }
 
         return clubJournalService.writeClubJournal(request, schoolClubOpt.get());
+    }
+
+    @Override
+    public ResponseEntity<BasicResponse> schoolClubImage(SchoolClubId request, MultipartFile multipartFile) throws IOException {
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getId());
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        SchoolClub schoolClub = schoolClubOpt.get();
+        Image image = imageService.saveImage(List.of(multipartFile)).get(0);
+
+        schoolClub.setImage(image);
+
+        schoolClubRepository.save(schoolClub);
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("이미지 등록이 정상적으로 되었습니다..")
+                .count(1)
+                .result(schoolClub)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
 
 }

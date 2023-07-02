@@ -1,5 +1,7 @@
-package com.project.bongyang_club_backend.domain.poster.service;
+package com.project.bongyang_club_backend.domain.image.service;
 
+import com.project.bongyang_club_backend.domain.image.domain.Image;
+import com.project.bongyang_club_backend.domain.image.repository.ImageRepository;
 import com.project.bongyang_club_backend.domain.poster.domain.Poster;
 import com.project.bongyang_club_backend.domain.poster.repository.PosterRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +19,17 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PosterServiceImpl implements PosterService {
+public class ImageServiceImpl implements ImageService {
 
-    private final PosterRepository posterRepository;
+    private final ImageRepository imageRepository;
 
-    private final String path = File.separator + "poster" + File.separator;
+    private final String path = "image" + File.separator;
 
-    private final String absolutePath = new File("./poster").getAbsolutePath() + File.separator;
+    private final String absolutePath = new File("./image").getAbsolutePath() + File.separator;
 
     @Override
-    public List<Poster> savePosters(List<MultipartFile> multipartFiles) throws IOException {
-        List<Poster> posters = new ArrayList<>();
+    public List<Image> saveImage(List<MultipartFile> multipartFiles) throws IOException {
+        List<Image> images = new ArrayList<>();
 
         if (multipartFiles != null) {
             File file = new File(path);
@@ -57,13 +59,13 @@ public class PosterServiceImpl implements PosterService {
                 }
 
                 String fileSaveName = multipartFile.getOriginalFilename() + "_" + UUID.randomUUID() + fileExtension;
-                Poster image = Poster.builder()
+                Image image = Image.builder()
                         .name(fileSaveName)
                         .url(path + fileSaveName)
                         .build();
 
-                posters.add(image);
-                posterRepository.save(image);
+                images.add(image);
+                imageRepository.save(image);
 
                 file = new File(absolutePath + File.separator + fileSaveName);
 
@@ -73,7 +75,7 @@ public class PosterServiceImpl implements PosterService {
             log.info("MultipartFiles Not Found");
         }
 
-        return posters;
+        return images;
     }
 
 }

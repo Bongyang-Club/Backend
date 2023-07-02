@@ -17,6 +17,8 @@ WebConfig implements WebMvcConfigurer {
 
     private final Path FILE_JOURNAL_ROOT = Paths.get("./journal").toAbsolutePath().normalize();
 
+    private final Path FILE_IMAGE_ROOT = Paths.get("./image").toAbsolutePath().normalize();
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
@@ -26,6 +28,9 @@ WebConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/journal/**")
                 .addResourceLocations(FILE_JOURNAL_ROOT.toUri().toString());
+        registry
+                .addResourceHandler("/image/**")
+                .addResourceLocations(FILE_IMAGE_ROOT.toUri().toString());
     }
 
     @Override

@@ -29,9 +29,9 @@ public class SchoolClubController {
         return schoolClubService.getMySchoolClub();
     }
 
-    @GetMapping("/club")
-    public ResponseEntity<BasicResponse> getSchoolClubById(@RequestBody SchoolClubId request) {
-        return schoolClubService.getSchoolClubById(request);
+    @GetMapping("/club/{clubId}")
+    public ResponseEntity<BasicResponse> getSchoolClubById(@RequestParam Long clubId) {
+        return schoolClubService.getSchoolClubById(clubId);
     }
 
     // 동아리 공지 가져오기
@@ -60,6 +60,12 @@ public class SchoolClubController {
     @PostMapping("/application/members")
     public ResponseEntity<BasicResponse> getSchoolClubApplicationMembers(@RequestBody SchoolClubId clubId) {
         return schoolClubService.getSchoolClubMembers(clubId, false);
+    }
+
+    @PostMapping("/club/image")
+    public ResponseEntity<BasicResponse> SchoolClubImage(@RequestPart SchoolClubId request,
+                                                         @RequestPart MultipartFile multipartFile) throws IOException {
+        return schoolClubService.schoolClubImage(request, multipartFile);
     }
 
     // 공지 등록

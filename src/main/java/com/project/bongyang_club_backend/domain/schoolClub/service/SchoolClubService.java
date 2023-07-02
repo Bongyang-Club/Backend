@@ -37,6 +37,8 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> writeJournal(WriteClubJournalRequest request) throws Exception;
 
-    ResponseEntity<BasicResponse> getSchoolClubById(SchoolClubId request);
+    ResponseEntity<BasicResponse> getSchoolClubById(Long request);
+
+    ResponseEntity<BasicResponse> schoolClubImage(SchoolClubId request, MultipartFile multipartFile) throws IOException;
 
 }

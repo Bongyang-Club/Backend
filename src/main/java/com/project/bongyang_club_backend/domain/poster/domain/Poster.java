@@ -16,12 +16,8 @@ public class Poster {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String path;
-
-    @Column(nullable = false)
     private String name;
 
-    private String saveName;
+    private String url;
 
 }
