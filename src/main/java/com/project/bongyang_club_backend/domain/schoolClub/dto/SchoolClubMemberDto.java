@@ -9,6 +9,8 @@ public class SchoolClubMemberDto {
 
     private String name;
 
+    private String sinumber;
+
     private String studentId;
 
     private String joinAt;

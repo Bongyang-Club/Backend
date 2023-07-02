@@ -281,6 +281,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
                     memberDtos.add(
                             SchoolClubMemberDto.builder()
                                     .name(clubMember.getName())
+                                    .sinumber(clubMember.getSinumber())
                                     .studentId(memberService.getStudentId(member))
                                     .joinAt(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(memberJoin.getJoinAt()))
                                     .build()
@@ -943,7 +944,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
-                .message("동아리원 삭제가 정상작으로 완료되었습니다.")
+                .message("동아리원 삭제가 정상적으로 완료되었습니다.")
                 .count(1)
                 .result(schoolClub)
                 .build();
