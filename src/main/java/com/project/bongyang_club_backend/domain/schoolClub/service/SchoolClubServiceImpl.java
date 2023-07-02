@@ -94,7 +94,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
                 .clubName(schoolClub.getName())
                 .leaderName(schoolClub.getLeader().getName())
                 .teacherName(schoolClub.getTeacher().getName())
-                .imageUrl(schoolClub.getImage().getUrl())
+                .imageUrl(schoolClub.getImage() == null ? null : schoolClub.getImage().getUrl())
                 .build();
 
         BasicResponse basicResponse = BasicResponse.builder()
@@ -367,13 +367,6 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         Member officer = officerOpt.get();
         Member teacher = teacherOpt.get();
-
-        if (!officer.getRole().equals(Role.CLUB_LEADER.getKey())) {
-            BasicResponse basicResponse = new BasicResponse()
-                    .error("동아리의 권한을 확인해주세요.");
-
-            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
-        }
 
         if (!teacher.getRole().equals(Role.TEACHER.getKey())) {
             BasicResponse basicResponse = new BasicResponse()
@@ -871,7 +864,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         if (schoolClubOpt.isEmpty()) {
             BasicResponse basicResponse = new BasicResponse()
-                    .error("동아리를 찾지못하였습니다.");
+                    .error("동아리를 찾지 못하였습니다.");
 
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
