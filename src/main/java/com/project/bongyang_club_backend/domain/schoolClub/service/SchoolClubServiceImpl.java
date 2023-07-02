@@ -908,4 +908,31 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
 
+    @Override
+    public ResponseEntity<BasicResponse> deleteClubMember(DeleteClubMemberRequest request) {
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getClubId());
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        SchoolClub schoolClub = schoolClubOpt.get();
+
+        for (String clubMemberId : request.getMemberIds()) {
+            Optional<Member> clubMember = memberRepository.findById(clubMemberId);
+
+            if (clubMemberId.isEmpty()) {
+                BasicResponse basicResponse = new BasicResponse()
+                        .error("동아리원을 찾을 수 없습니다.");
+
+                return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+            }
+        }
+
+        return null;
+    }
+
 }

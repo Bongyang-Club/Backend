@@ -41,4 +41,6 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> schoolClubImage(SchoolClubId request, MultipartFile multipartFile) throws IOException;
 
+    ResponseEntity<BasicResponse> deleteClubMember(DeleteClubMemberRequest request);
+
 }

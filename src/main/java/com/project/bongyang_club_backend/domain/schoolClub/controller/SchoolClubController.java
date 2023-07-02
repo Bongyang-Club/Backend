@@ -5,6 +5,7 @@ import com.project.bongyang_club_backend.domain.schoolClub.dto.*;
 import com.project.bongyang_club_backend.global.response.BasicResponse;
 import com.project.bongyang_club_backend.domain.schoolClub.service.SchoolClubService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.Basic;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -131,6 +132,11 @@ public class SchoolClubController {
     @PutMapping("/notice")
     public ResponseEntity<BasicResponse> deleteNotice(@RequestBody @Valid DeleteNoticeRequest request) {
         return schoolClubService.deleteNotice(request);
+    }
+
+    @PutMapping("/club/delete/member")
+    public ResponseEntity<BasicResponse> deleteClubMember(@RequestBody @Valid DeleteClubMemberRequest request) {
+        return schoolClubService.deleteClubMember(request);
     }
 
 }
