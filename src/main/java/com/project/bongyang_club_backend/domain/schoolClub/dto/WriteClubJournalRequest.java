@@ -13,7 +13,7 @@ public class WriteClubJournalRequest {
     @NotNull(message = "동아리 아이디를 확인해주세요.")
     private Long clubId;
 
-    private LocalDateTime activityDate;
+    private String activityDate;
 
     @NotBlank(message = "활동날자를 작성해주세요.")
     private String activityTime;
@@ -36,7 +36,7 @@ public class WriteClubJournalRequest {
 
     private String studentRatting;
 
-    private LocalDateTime dueDate;
+    private String dueDate;
 
     @NotBlank(message = "활동계획을 작성해주세요.")
     private String duePlan;

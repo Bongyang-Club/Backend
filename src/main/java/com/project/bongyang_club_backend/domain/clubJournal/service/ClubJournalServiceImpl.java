@@ -106,7 +106,7 @@ public class ClubJournalServiceImpl implements ClubJournalService {
         table.getRowList().get(1).getCellList().get(1).getParagraphList().getParagraph(0).getText().addString(schoolClub.getName());
         table.getRowList().get(1).getCellList().get(3).getParagraphList().getParagraph(0).getText().addString(request.getPlace());
 
-        table.getRowList().get(2).getCellList().get(1).getParagraphList().getParagraph(0).getText().addString(DateTimeFormatter.ofPattern("yyyy-MM-dd HH").format(request.getActivityDate()) + "시");
+        table.getRowList().get(2).getCellList().get(1).getParagraphList().getParagraph(0).getText().addString(request.getActivityDate());
         table.getRowList().get(2).getCellList().get(3).getParagraphList().getParagraph(0).getText().addString(request.getActivityTime());
 
         table.getRowList().get(3).getCellList().get(2).getParagraphList().getParagraph(0).getText().addString(request.getParticipantCount() + "명");
@@ -121,7 +121,7 @@ public class ClubJournalServiceImpl implements ClubJournalService {
 
         table.getRowList().get(8).getCellList().get(1).getParagraphList().getParagraph(0).getText().addString(request.getStudentRatting());
 
-        table.getRowList().get(9).getCellList().get(2).getParagraphList().getParagraph(0).getText().addString(DateTimeFormatter.ofPattern("yyyy-MM-dd HH").format(request.getDueDate()) + "시");
+        table.getRowList().get(9).getCellList().get(2).getParagraphList().getParagraph(0).getText().addString(request.getDueDate());
 
         table.getRowList().get(10).getCellList().get(1).getParagraphList().getParagraph(0).getText().addString(request.getDuePlan());
 
