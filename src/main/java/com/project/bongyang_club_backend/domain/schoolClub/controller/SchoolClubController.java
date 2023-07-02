@@ -30,8 +30,8 @@ public class SchoolClubController {
         return schoolClubService.getMySchoolClub();
     }
 
-    @GetMapping("/club/{clubId}")
-    public ResponseEntity<BasicResponse> getSchoolClubById(@RequestParam Long clubId) {
+    @GetMapping("/{clubId}")
+    public ResponseEntity<BasicResponse> getSchoolClubById(@PathVariable Long clubId) {
         return schoolClubService.getSchoolClubById(clubId);
     }
 

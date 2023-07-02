@@ -900,7 +900,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
-                .message("이미지 등록이 정상적으로 되었습니다..")
+                .message("이미지 등록이 정상적으로 되었습니다.")
                 .count(1)
                 .result(schoolClub)
                 .build();
@@ -922,17 +922,40 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         SchoolClub schoolClub = schoolClubOpt.get();
 
         for (String clubMemberId : request.getMemberIds()) {
-            Optional<Member> clubMember = memberRepository.findById(clubMemberId);
+            Optional<Member> clubMemberOpt = memberRepository.findById(clubMemberId);
 
             if (clubMemberId.isEmpty()) {
                 BasicResponse basicResponse = new BasicResponse()
-                        .error("동아리원을 찾을 수 없습니다.");
+                        .error("삭제할 사용자를 찾을 수 없습니다.");
 
                 return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
             }
+
+            Member clubMember = clubMemberOpt.get();
+            Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClub(clubMember, schoolClub);
+
+            if (memberJoinOpt.isEmpty() || memberJoinOpt.get().getStatus() != 2) {
+                BasicResponse basicResponse = new BasicResponse()
+                        .error("동아리원이 아닙니다.");
+
+                return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+            }
+
+            MemberJoin memberJoin = memberJoinOpt.get();
+            memberJoin.setStatus(4);
+
+            memberJoinRepository.save(memberJoin);
         }
 
-        return null;
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("동아리원 삭제가 정상작으로 완료되었습니다.")
+                .count(1)
+                .result(schoolClub)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
 
 }
