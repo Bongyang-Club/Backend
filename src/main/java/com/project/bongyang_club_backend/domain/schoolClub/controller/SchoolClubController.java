@@ -29,6 +29,11 @@ public class SchoolClubController {
         return schoolClubService.getMySchoolClub();
     }
 
+    @GetMapping("/club")
+    public ResponseEntity<BasicResponse> getSchoolClubById(@RequestBody SchoolClubId request) {
+        return schoolClubService.getSchoolClubById(request);
+    }
+
     // 동아리 공지 가져오기
     @GetMapping("/notices/{clubId}")
     public ResponseEntity<BasicResponse> getSchoolClubNotices(@PathVariable Long clubId) {

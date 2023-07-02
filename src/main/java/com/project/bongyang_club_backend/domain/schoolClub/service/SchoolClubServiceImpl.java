@@ -21,6 +21,7 @@ import com.project.bongyang_club_backend.domain.target.service.TargetSerivce;
 import com.project.bongyang_club_backend.global.response.BasicResponse;
 import com.project.bongyang_club_backend.global.security.JWTProvider;
 import com.project.bongyang_club_backend.domain.member.service.MemberService;
+import jakarta.persistence.Basic;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import kr.dogfoot.hwplib.object.HWPFile;
@@ -72,6 +73,36 @@ public class SchoolClubServiceImpl implements SchoolClubService {
     private final JWTProvider jwtProvider;
 
     private final HttpServletRequest httpServletRequest;
+
+    @Override
+    public ResponseEntity<BasicResponse> getSchoolClubById(SchoolClubId request) {
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(request.getId());
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        SchoolClub schoolClub = schoolClubOpt.get();
+        SchoolClubResponse schoolClubResponse = SchoolClubResponse.builder()
+                .clubName(schoolClub.getName())
+                .leaderName(schoolClub.getLeader().getName())
+                .teacherName(schoolClub.getTeacher().getName())
+                .imageUrl(schoolClub.getImage().getUrl())
+                .build();
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("똥아리를 정상적으로 찾았습니다.")
+                .count(1)
+                .result(schoolClubResponse)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
 
     @Override
     public ResponseEntity<BasicResponse> deleteNotice(DeleteNoticeRequest request) {
