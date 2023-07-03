@@ -221,6 +221,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         for (MemberJoin memberJoin : memberOpt.get().getSchoolClubs()) {
             if (memberJoin.getStatus() == 2) {
                 mySchoolClub.add(MySchoolClubDto.builder()
+                        .name(memberJoin.getSchoolClub().getName())
                         .clubId(memberJoin.getSchoolClub().getId())
                         .image(memberJoin.getSchoolClub().getImage())
                         .build());
@@ -643,9 +644,9 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
-        
+
         List<Long> memberJoinIds = request.getMemberJoinIds();
-        
+
         if (memberJoinIds.isEmpty()) {
             BasicResponse basicResponse = new BasicResponse()
                     .error(approve ? "승인" : "거절" + "할 동아리 신청 내역이 존재하지 않습니다.");
@@ -820,7 +821,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
             return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
         }
-        
+
         Member member = memberOpt.get();
         Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(clubId.getId());
 

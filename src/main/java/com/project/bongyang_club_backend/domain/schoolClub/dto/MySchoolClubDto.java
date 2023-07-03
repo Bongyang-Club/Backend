@@ -8,6 +8,8 @@ import lombok.Data;
 @Builder
 public class MySchoolClubDto {
 
+    private String name;
+
     private Long clubId;
 
     private Image image;
