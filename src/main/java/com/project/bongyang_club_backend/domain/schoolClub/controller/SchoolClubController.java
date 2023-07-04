@@ -25,7 +25,7 @@ public class SchoolClubController {
     private final SchoolClubService schoolClubService;
 
     // 자신이 가입한 동아리 리스트
-    @GetMapping("/my/club")
+    @GetMapping("/my/club") //
     public ResponseEntity<BasicResponse> getMySchoolClub() {
         return schoolClubService.getMySchoolClub();
     }
@@ -36,65 +36,65 @@ public class SchoolClubController {
     }
 
     // 동아리 공지 가져오기
-    @GetMapping("/notices/{clubId}")
+    @GetMapping("/notices/{clubId}") //
     public ResponseEntity<BasicResponse> getSchoolClubNotices(@PathVariable Long clubId) {
         return schoolClubService.getSchoolClubNotices(clubId);
     }
 
-    @GetMapping("/promotions")
+    @GetMapping("/promotions") //
     public ResponseEntity<BasicResponse> getPromotions() {
         return promotionPostService.getPromotionPosts();
     }
 
-    @GetMapping("/promotion/{id}")
+    @GetMapping("/promotion/{id}") //
     public ResponseEntity<BasicResponse> getPromotionById(@PathVariable Long id) {
         return promotionPostService.getPromotionPostById(id);
     }
 
     // 동아리원 리스트
     // clubName에는 공백이 포함되지 않으므로 공백은 "_"로 대체한다.
-    @PostMapping("/members")
+    @PostMapping("/members") //
     public ResponseEntity<BasicResponse> getSchoolClubMembers(@RequestBody SchoolClubId clubId) {
         return schoolClubService.getSchoolClubMembers(clubId, true);
     }
 
-    @PostMapping("/application/members")
+    @PostMapping("/application/members") //
     public ResponseEntity<BasicResponse> getSchoolClubApplicationMembers(@RequestBody SchoolClubId clubId) {
         return schoolClubService.getSchoolClubMembers(clubId, false);
     }
 
-    @PostMapping("/club/image")
+    @PostMapping("/club/image") //
     public ResponseEntity<BasicResponse> SchoolClubImage(@RequestPart SchoolClubId request,
                                                          @RequestPart MultipartFile multipartFile) throws IOException {
         return schoolClubService.schoolClubImage(request, multipartFile);
     }
 
     // 공지 등록
-    @PostMapping("/notice")
+    @PostMapping("/notice") //
     public ResponseEntity<BasicResponse> postNotice(@RequestBody @Valid PostNoticeRequest request) {
         return schoolClubService.postNotice(request);
     }
 
     // 동아리 신청
-    @PostMapping("/enroll")
+    @PostMapping("/enroll") //
     public ResponseEntity<BasicResponse> schoolClubEnroll(@RequestBody @Valid SchoolClubEnrollRequest request) {
         return schoolClubService.schoolClubEnroll(request);
     }
 
     // 신청: 학생 -> 동아리
-    @PostMapping("/application")
+    @PostMapping("/application") //
     public ResponseEntity<BasicResponse> schoolClubApplication(@RequestBody @Valid SchoolClubApplicationRequest request) {
         return schoolClubService.schoolClubApplication(request);
     }
 
     // 동아리 신청(학생 -> 동아리) 리스트
-    @PostMapping("/application/list")
+    @PostMapping("/application/list") //
     public ResponseEntity<BasicResponse> schoolClubApplicationList(@RequestBody @Valid SchoolClubApplicationListRequest request) {
         return schoolClubService.schoolClubApplicationList(request);
     }
 
     // 개발 중
-    @PostMapping("/application/promotion")
+    @PostMapping("/application/promotion") //
     public ResponseEntity<BasicResponse> schoolClubPromotionApplication(@RequestPart @Valid SchoolClubPromotionApplicationRequest request,
                                                                         @RequestPart MultipartFile poster) throws IOException {
         return schoolClubService.schoolClubPromotionApplication(request, poster);
