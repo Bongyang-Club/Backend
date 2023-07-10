@@ -21,9 +21,9 @@ public class PosterServiceImpl implements PosterService {
 
     private final PosterRepository posterRepository;
 
-    private final String path = File.separator + "poster" + File.separator;
+    private final String path = "poster" + File.separator;
 
-    private final String absolutePath = new File("./poster").getAbsolutePath() + File.separator;
+    private final String absolutePath = new File("poster").getAbsolutePath() + File.separator;
 
     @Override
     public List<Poster> savePosters(List<MultipartFile> multipartFiles) throws IOException {
@@ -35,6 +35,8 @@ public class PosterServiceImpl implements PosterService {
             if (!file.exists()) {
                 if (!file.mkdir()) {
                     log.info("file was not successful");
+                } else {
+                    log.info("file success");
                 }
             }
 
@@ -56,7 +58,7 @@ public class PosterServiceImpl implements PosterService {
                     }
                 }
 
-                String fileSaveName = multipartFile.getOriginalFilename() + "_" + UUID.randomUUID() + fileExtension;
+                String fileSaveName = UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
                 Poster image = Poster.builder()
                         .name(fileSaveName)
                         .url(path + fileSaveName)

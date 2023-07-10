@@ -41,6 +41,8 @@ public class TargetServiceImpl implements TargetSerivce {
             targetList.add(target);
         }
 
+        targetRepository.saveAll(targetList);
+
         return targetList;
     }
 
