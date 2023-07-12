@@ -58,11 +58,11 @@ public class ClubJournalServiceImpl implements ClubJournalService {
             settingTitle(title, schoolClub);
             settingTable(table, request, schoolClub);
 
-            HWPWriter.toFile(hwpFile, path + schoolClub.getName() + "_" + uuid + ".hwp");
+            HWPWriter.toFile(hwpFile, path + schoolClub.getId() + "_" + uuid + ".hwp");
         }
 
         ClubJournal clubJournal = ClubJournal.builder()
-                .path(path + schoolClub.getName() + "_" + uuid + ".hwp")
+                .path(path + schoolClub.getId() + "_" + uuid + ".hwp")
                 .name(schoolClub.getName() + LocalDate.now())
                 .createdAt(LocalDateTime.now())
                 .build();
