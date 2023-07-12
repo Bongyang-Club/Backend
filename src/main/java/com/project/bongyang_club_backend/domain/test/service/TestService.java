@@ -34,7 +34,7 @@ public class TestService {
             Member student1 = Member.builder()
                     .sinumber("1201")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("일일일")
+                    .name("박대형")
                     .sgrade("3")
                     .sclass("2")
                     .snumber("1")
@@ -44,7 +44,7 @@ public class TestService {
             Member student2 = Member.builder()
                     .sinumber("1202")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("이이이")
+                    .name("박중형")
                     .sgrade("3")
                     .sclass("2")
                     .snumber("2")
@@ -54,7 +54,7 @@ public class TestService {
             Member student3 = Member.builder()
                     .sinumber("1203")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("삼삼삼")
+                    .name("박소형")
                     .sgrade("3")
                     .sclass("2")
                     .snumber("3")
@@ -64,7 +64,7 @@ public class TestService {
             Member student4 = Member.builder()
                     .sinumber("1204")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("사사사")
+                    .name("박중소형")
                     .sgrade("3")
                     .sclass("2")
                     .snumber("4")
@@ -74,17 +74,77 @@ public class TestService {
             Member student5 = Member.builder()
                     .sinumber("1205")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("오오오")
+                    .name("박소중형")
                     .sgrade("3")
                     .sclass("2")
                     .snumber("5")
                     .role(Role.STUDENT.getKey())
                     .build();
 
+          Member student6 = Member.builder()
+                  .sinumber("1222")
+                  .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
+                  .name("박소중이형")
+                  .sgrade("3")
+                  .sclass("2")
+                  .snumber("5")
+                  .role(Role.STUDENT.getKey())
+                  .build();
+
+          Member student7 = Member.builder()
+                  .sinumber("1251")
+                  .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
+                  .name("박소소형")
+                  .sgrade("3")
+                  .sclass("2")
+                  .snumber("5")
+                  .role(Role.STUDENT.getKey())
+                  .build();
+
+          Member student8 = Member.builder()
+                  .sinumber("1251")
+                  .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
+                  .name("박소중대형")
+                  .sgrade("3")
+                  .sclass("2")
+                  .snumber("5")
+                  .role(Role.STUDENT.getKey())
+                  .build();
+
+          Member student9 = Member.builder()
+                  .sinumber("1251")
+                  .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
+                  .name("박중중대형")
+                  .sgrade("3")
+                  .sclass("2")
+                  .snumber("5")
+                  .role(Role.STUDENT.getKey())
+                  .build();
+
+          Member student10 = Member.builder()
+                  .sinumber("1251")
+                  .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
+                  .name("박대대형")
+                  .sgrade("3")
+                  .sclass("2")
+                  .snumber("5")
+                  .role(Role.STUDENT.getKey())
+                  .build();
+
+          Member student11 = Member.builder()
+                  .sinumber("1251")
+                  .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
+                  .name("박중중형")
+                  .sgrade("3")
+                  .sclass("2")
+                  .snumber("5")
+                  .role(Role.STUDENT.getKey())
+                  .build();
+
             Member clubLeader1 = Member.builder()
                     .sinumber("1206")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("육육육")
+                    .name("박대소형")
                     .sgrade("3")
                     .sclass("2")
                     .snumber("6")
@@ -94,7 +154,7 @@ public class TestService {
             Member clubLeader2 = Member.builder()
                     .sinumber("1207")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("칠칠칠")
+                    .name("박대중형")
                     .sgrade("3")
                     .sclass("2")
                     .snumber("7")
@@ -104,21 +164,21 @@ public class TestService {
             Member teacher1 = Member.builder()
                     .sinumber("선생님1")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("선생님1")
+                    .name("대형쌤")
                     .role(Role.TEACHER.getKey())
                     .build();
 
             Member teacher2 = Member.builder()
                     .sinumber("선생님2")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("선생님2")
+                    .name("중형쌤")
                     .role(Role.TEACHER.getKey())
                     .build();
 
             Member teacher3 = Member.builder()
                     .sinumber("선생님3")
                     .password("$2a$10$0DtPSK0efLSdBKfbvyVDVuUcFo.9V/2MLaoKmlVB4YjfOJ5FwVcCC")
-                    .name("선생님3")
+                    .name("소형쌤")
                     .role(Role.TEACHER.getKey())
                     .build();
 
@@ -129,14 +189,14 @@ public class TestService {
                     .role(Role.ADMIN.getKey())
                     .build();
 
-            members.addAll(List.of(student1, student2, student3, student4, student5, teacher1, teacher2, teacher3, clubLeader1, clubLeader2, admin));
+            members.addAll(List.of(student1, student2, student3, student4, student5, student6, student7, student8, student9, student10, student11, teacher1, teacher2, teacher3, clubLeader1, clubLeader2, admin));
 
             memberRepository.saveAll(members);
 
             // 동아리
             List<SchoolClub> schoolClubs = new ArrayList<>();
             SchoolClub club1 = SchoolClub.builder()
-                    .name("동아리1")
+                    .name("배드민턴 동아리")
                     .leader(clubLeader1)
                     .teacher(teacher1)
                     .introduce("소개")
@@ -145,7 +205,7 @@ public class TestService {
                     .build();
 
             SchoolClub club2 = SchoolClub.builder()
-                    .name("동아리2")
+                    .name("댄스 동아리")
                     .leader(clubLeader2)
                     .teacher(teacher2)
                     .introduce("소개")
@@ -153,16 +213,7 @@ public class TestService {
                     .status(1)
                     .build();
 
-            SchoolClub club3 = SchoolClub.builder()
-                    .name("동아리3")
-                    .leader(clubLeader1)
-                    .teacher(teacher3)
-                    .introduce("소개")
-                    .m_type(1)
-                    .status(1)
-                    .build();
-
-            schoolClubs.addAll(List.of(club1, club2, club3));
+            schoolClubs.addAll(List.of(club1, club2));
 
             schoolClubRepository.saveAll(schoolClubs);
 
@@ -177,18 +228,54 @@ public class TestService {
                     .applicationAt(LocalDateTime.now())
                     .build());
 
+          memberJoins.add(MemberJoin.builder()
+                  .member(student7)
+                  .schoolClub(club1)
+                  .role(Role.STUDENT.getKey())
+                  .status(1)
+                  .joinAt(LocalDateTime.now())
+                  .applicationAt(LocalDateTime.now())
+                  .build());
+
+          memberJoins.add(MemberJoin.builder()
+                  .member(student8)
+                  .schoolClub(club1)
+                  .role(Role.STUDENT.getKey())
+                  .status(1)
+                  .joinAt(LocalDateTime.now())
+                  .applicationAt(LocalDateTime.now())
+                  .build());
+
+          memberJoins.add(MemberJoin.builder()
+                  .member(student9)
+                  .schoolClub(club1)
+                  .role(Role.STUDENT.getKey())
+                  .status(1)
+                  .joinAt(LocalDateTime.now())
+                  .applicationAt(LocalDateTime.now())
+                  .build());
+
+          memberJoins.add(MemberJoin.builder()
+                  .member(student10)
+                  .schoolClub(club1)
+                  .role(Role.STUDENT.getKey())
+                  .status(1)
+                  .joinAt(LocalDateTime.now())
+                  .applicationAt(LocalDateTime.now())
+                  .build());
+
+          memberJoins.add(MemberJoin.builder()
+                  .member(student11)
+                  .schoolClub(club1)
+                  .role(Role.STUDENT.getKey())
+                  .status(1)
+                  .joinAt(LocalDateTime.now())
+                  .applicationAt(LocalDateTime.now())
+                  .build());
+
             memberJoins.add(MemberJoin.builder()
                     .member(clubLeader2)
                     .schoolClub(club2)
-                    .role(Role.CLUB_LEADER.getKey())
-                    .status(2)
-                    .joinAt(LocalDateTime.now())
-                    .applicationAt(LocalDateTime.now())
-                    .build());
-
-            memberJoins.add(MemberJoin.builder()
-                    .member(clubLeader1)
-                    .schoolClub(club3)
                     .role(Role.CLUB_LEADER.getKey())
                     .status(2)
                     .joinAt(LocalDateTime.now())
@@ -205,7 +292,7 @@ public class TestService {
                     .build());
 
             memberJoins.add(MemberJoin.builder()
-                    .member(student2)
+                    .member(student5)
                     .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
                     .status(2)
@@ -232,17 +319,8 @@ public class TestService {
                     .build());
 
             memberJoins.add(MemberJoin.builder()
-                    .member(student5)
-                    .schoolClub(club2)
-                    .role(Role.STUDENT.getKey())
-                    .status(2)
-                    .joinAt(LocalDateTime.now())
-                    .applicationAt(LocalDateTime.now())
-                    .build());
-
-            memberJoins.add(MemberJoin.builder()
-                    .member(student1)
-                    .schoolClub(club3)
+                    .member(student6)
+                    .schoolClub(club1)
                     .role(Role.STUDENT.getKey())
                     .status(1)
                     .joinAt(LocalDateTime.now())

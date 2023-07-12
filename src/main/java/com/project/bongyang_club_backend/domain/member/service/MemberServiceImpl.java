@@ -66,10 +66,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseEntity<BasicResponse> login(SignRequest request) {
         Optional<Member> memberOpt = memberRepository.findById(request.getSi_number());
-
         log.info(request.toString());
 
         if (memberOpt.isEmpty()) {
+
+          log.info("12");
             BasicResponse basicResponse = BasicResponse.builder()
                     .code(HttpStatus.FORBIDDEN.value())
                     .httpStatus(HttpStatus.OK)
@@ -80,6 +81,8 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = memberOpt.get();
+
+      log.info("1");
 
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
             BasicResponse basicResponse = BasicResponse.builder()
@@ -98,9 +101,15 @@ public class MemberServiceImpl implements MemberService {
                 .token(jwtProvider.createToken(member.getSinumber(), member.getRole()))
                 .build();
 
+
+      log.info("2");
+
         if (member.getRole().equals(Role.STUDENT.getKey())) {
             signResponse.setStudentId(getStudentId(member));
         }
+
+
+      log.info("3");
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())

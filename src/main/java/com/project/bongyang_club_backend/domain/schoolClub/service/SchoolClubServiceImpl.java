@@ -195,6 +195,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         }
 
         List<Notice> notices = schoolClubOpt.get().getNotices();
+        Collections.reverse(notices);
+
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
@@ -278,7 +280,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         if (check) {
             for (MemberJoin memberJoin : memberJoins) {
-                if (memberJoin.getStatus() == 2) {
+                if (memberJoin.getStatus() == 2 && memberJoin.getRole().equals(Role.STUDENT.getKey())) {
                     Member clubMember = memberJoin.getMember();
 
                     memberDtos.add(
@@ -989,7 +991,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
 
         MemberJoin memberJoin = memberJoinOpt.get();
 
-        if (!memberJoin.getRole().equals(Role.ADMIN.getKey())) {
+        if (!memberJoin.getRole().equals(Role.CLUB_LEADER.getKey())) {
             BasicResponse basicResponse = new BasicResponse()
                     .error("동아리장이 아닙니다.");
 
