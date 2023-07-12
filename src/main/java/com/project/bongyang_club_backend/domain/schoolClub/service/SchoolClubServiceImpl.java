@@ -587,7 +587,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
                 .schoolClub(schoolClub)
                 .postForm(postForm)
                 .poster(posterService.savePosters(List.of(poster)).get(0))
-                .status(true)
+                .status(true) // test
                 .build();
 
         promotionPostRepository.save(promotionPost);
