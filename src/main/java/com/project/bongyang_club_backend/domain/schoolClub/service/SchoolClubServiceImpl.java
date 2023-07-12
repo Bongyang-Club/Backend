@@ -997,14 +997,20 @@ public class SchoolClubServiceImpl implements SchoolClubService {
         }
 
         List<ClubJournal> journals = schoolClub.getClubJournals();
+        List<JournalDto> journalDtos = new ArrayList<>();
+
         Collections.reverse(journals);
+
+        for (ClubJournal clubJournal : journals) {
+            journalDtos.add(new JournalDto(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(clubJournal.getCreatedAt()), clubJournal.getPath()));
+        }
 
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("동아리 일지가 정상적으로 가져와졌습니다.")
                 .count(1)
-                .result(schoolClub)
+                .result(journalDtos)
                 .build();
 
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
