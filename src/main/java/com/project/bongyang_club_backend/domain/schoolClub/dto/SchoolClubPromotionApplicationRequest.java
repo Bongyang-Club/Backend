@@ -52,6 +52,6 @@ public class SchoolClubPromotionApplicationRequest {
     private String a_time;
 
     // 가입 문의
-    private Map<String, String> a_inquiry;
+    private String a_inquiry;
 
 }

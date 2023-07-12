@@ -577,6 +577,7 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             postForm.setR_s_total(targetSerivce.countPeople(request.getTarget()));
         }
 
+        postForm.setInquiry(request.getA_inquiry());
         postForm.setP_how(request.getA_method());
         postForm.setP_place(request.getA_place());
         postForm.setP_time(request.getA_time());

@@ -69,11 +69,6 @@ public class PostForm {
 
 
     // 문의
-    // 카톡
-    private String i_kakao;
-    // 인스타
-    private String i_insta;
-    // 전화번호
-    private String i_phone;
+    private String inquiry;
 
 }
