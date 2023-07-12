@@ -41,6 +41,11 @@ public class SchoolClubController {
         return schoolClubService.getSchoolClubNotices(clubId);
     }
 
+    @GetMapping("/journal/{clubId}")
+    public ResponseEntity<BasicResponse> getJournalById(@PathVariable Long clubId) {
+        return schoolClubService.getJournalById(clubId);
+    }
+
     @GetMapping("/promotions") //
     public ResponseEntity<BasicResponse> getPromotions() {
         return promotionPostService.getPromotionPosts();

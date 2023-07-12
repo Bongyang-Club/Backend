@@ -43,4 +43,6 @@ public interface SchoolClubService {
 
     ResponseEntity<BasicResponse> deleteClubMember(DeleteClubMemberRequest request);
 
+    ResponseEntity<BasicResponse> getJournalById(Long clubId);
+
 }

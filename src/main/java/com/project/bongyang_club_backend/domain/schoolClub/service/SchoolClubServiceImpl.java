@@ -1,5 +1,6 @@
 package com.project.bongyang_club_backend.domain.schoolClub.service;
 
+import com.project.bongyang_club_backend.domain.clubJournal.domain.ClubJournal;
 import com.project.bongyang_club_backend.domain.clubJournal.service.ClubJournalService;
 import com.project.bongyang_club_backend.domain.image.domain.Image;
 import com.project.bongyang_club_backend.domain.image.service.ImageService;
@@ -43,6 +44,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -948,6 +950,59 @@ public class SchoolClubServiceImpl implements SchoolClubService {
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("동아리원 삭제가 정상적으로 완료되었습니다.")
+                .count(1)
+                .result(schoolClub)
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
+
+    @Override
+    public ResponseEntity<BasicResponse> getJournalById(Long clubId) {
+        Optional<Member> memberOpt = jwtProvider.getMemberByToken(httpServletRequest);
+
+        if (memberOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("로그인 후 이용 가능합니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        Optional<SchoolClub> schoolClubOpt = schoolClubRepository.findById(clubId);
+
+        if (schoolClubOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리를 찾을 수 없습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        SchoolClub schoolClub = schoolClubOpt.get();
+        Optional<MemberJoin> memberJoinOpt = memberJoinRepository.findByMemberAndSchoolClub(memberOpt.get(), schoolClubOpt.get());
+
+        if (memberJoinOpt.isEmpty()) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("해당 동아리에 가입 되어있지 않습니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        MemberJoin memberJoin = memberJoinOpt.get();
+
+        if (!memberJoin.getRole().equals(Role.ADMIN.getKey())) {
+            BasicResponse basicResponse = new BasicResponse()
+                    .error("동아리장이 아닙니다.");
+
+            return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+        }
+
+        List<ClubJournal> journals = schoolClub.getClubJournals();
+        Collections.reverse(journals);
+
+        BasicResponse basicResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("동아리 일지가 정상적으로 가져와졌습니다.")
                 .count(1)
                 .result(schoolClub)
                 .build();
