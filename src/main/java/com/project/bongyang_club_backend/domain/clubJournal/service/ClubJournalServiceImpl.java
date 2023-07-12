@@ -49,6 +49,8 @@ public class ClubJournalServiceImpl implements ClubJournalService {
             }
         }
 
+        String uuid = String.valueOf(UUID.randomUUID());
+
         if (hwpFile != null) {
             ControlTable title = findTable1(hwpFile);
             table = findTable2(hwpFile);
@@ -56,11 +58,11 @@ public class ClubJournalServiceImpl implements ClubJournalService {
             settingTitle(title, schoolClub);
             settingTable(table, request, schoolClub);
 
-            HWPWriter.toFile(hwpFile, path + schoolClub.getName() + "_" + UUID.randomUUID() + ".hwp");
+            HWPWriter.toFile(hwpFile, path + schoolClub.getName() + "_" + uuid + ".hwp");
         }
 
         ClubJournal clubJournal = ClubJournal.builder()
-                .path(path + schoolClub.getName() + "_" + UUID.randomUUID() + ".hwp")
+                .path(path + schoolClub.getName() + "_" + uuid + ".hwp")
                 .name(schoolClub.getName() + LocalDate.now())
                 .createdAt(LocalDateTime.now())
                 .build();
