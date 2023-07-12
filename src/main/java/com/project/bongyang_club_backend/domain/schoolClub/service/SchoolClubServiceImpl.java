@@ -1005,6 +1005,8 @@ public class SchoolClubServiceImpl implements SchoolClubService {
             journalDtos.add(new JournalDto(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(clubJournal.getCreatedAt()), clubJournal.getPath()));
         }
 
+        // test
+
         BasicResponse basicResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
