@@ -1,5 +1,6 @@
 package com.project.bongyang_club_backend.domain.schoolClub.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.bongyang_club_backend.domain.clubJournal.domain.ClubJournal;
 import com.project.bongyang_club_backend.domain.image.domain.Image;
 import com.project.bongyang_club_backend.domain.notice.domain.Notice;
@@ -44,6 +45,7 @@ public class SchoolClub {
 
     // 홍보 포스터
     @OneToOne
+    @JsonIgnore
     private PromotionPost promotionPost;
 
     // 동아리 일지
